@@ -1,0 +1,56 @@
+{
+  "anchor_cache_policy": "reuse_frozen",
+  "model": {
+    "n_genes": 4000,
+    "n_proteins": 31,
+    "members": 8,
+    "use_encoder_qc": true,
+    "use_state": true,
+    "use_niche": true,
+    "local_operator": "csnn"
+  },
+  "train": {
+    "epochs": 80,
+    "warmup_epochs": 8,
+    "prototype_ramp_epochs": 8,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "clip_grad": 1.0,
+    "base_weight": 0.2,
+    "state_weight": 0.1,
+    "niche_weight": 0.05,
+    "ema_start": 0.99,
+    "ema_end": 0.999,
+    "teacher_temp_start": 0.07,
+    "teacher_temp_end": 0.04,
+    "center_momentum": 0.9,
+    "mask_rates": [
+      0.0
+    ],
+    "count_keep_rates": [
+      1.0
+    ],
+    "count_views_per_rate": 1,
+    "validate_every": 4,
+    "patience": 6,
+    "core_size": 256,
+    "min_core": 128,
+    "max_core": 512,
+    "graph_k": 6,
+    "graph_radius": 2.5,
+    "execution_mode": "full",
+    "threads": 2,
+    "seed": 2025,
+    "checkpoint_stage": "after_ramp",
+    "residual_target": "in_fit",
+    "spatial_alpha": 0.5,
+    "teacher_mode": "none",
+    "initialization": "hierarchical",
+    "router_components": 50,
+    "router_clusters": 32,
+    "router_per_source": 4000,
+    "prototype_per_source": 2000,
+    "weight_modulated_input": true,
+    "checkpoint_representations": true
+  }
+}

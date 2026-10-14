@@ -1,0 +1,10 @@
+{
+  "deployment_regression": {
+    "passed": 8,
+    "warnings": 1,
+    "seconds": 29.48
+  },
+  "installed_wheel_pipeline": "passed",
+  "full_regression": "included and configured in GitHub Actions; local attempts incomplete",
+  "algorithm_and_trainer_changes": false
+}

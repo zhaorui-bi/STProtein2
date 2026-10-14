@@ -1,0 +1,26 @@
+{
+  "installed_wheel_imports": true,
+  "actual_nested_training": true,
+  "query_adt_absent": true,
+  "export_prediction_exact_parity": true,
+  "residual_component_exact_parity": true,
+  "restored_latest_configuration": true,
+  "shape": [
+    16,
+    31
+  ],
+  "teacher_mode": "none",
+  "residual_target": "in_fit",
+  "runtime": {
+    "python": "3.12.12",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "scikit-learn": "1.9.0",
+    "torch": "2.8.0+cu129",
+    "anndata": "0.12.19",
+    "joblib": "1.6.0"
+  },
+  "wheel_sha256": "d17d2b6afb2a378fed0e6c6f300158a63dcce9ad66d9acc77f60da94f7d8f48b",
+  "scope": "Synthetic CPU engineering validation; not a protein accuracy benchmark.",
+  "dependency_environment": "Isolated wheel installation; verified scientific dependencies reused without processing the original editable-package hooks."
+}
