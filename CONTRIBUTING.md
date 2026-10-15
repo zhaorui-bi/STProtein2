@@ -26,4 +26,6 @@ python -m build
 
 The wheel includes only `stprotein2`. The source archive also includes evaluation, research, examples, configs and documentation. CI tests a built wheel from outside the checkout, including actual demo training, export and RNA-only prediction.
 
+CI covers Python 3.10 and 3.12, builds the wheel from the source archive, checks distribution metadata and installed dependencies, and runs the complete regression suite. The package version is defined once in `stprotein2/__init__.py`; `stprotein2 --version` reports it without loading scientific libraries.
+
 Runs, anchor caches and bundles bind source hashes. Use a fresh output/cache directory after changing source; preserve the matching environment for existing artifacts. Never weaken integrity checks to reuse incompatible results.

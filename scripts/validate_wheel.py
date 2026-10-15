@@ -24,6 +24,7 @@ def main():
 
     run('-c', '''
 import importlib.abc
+import importlib.metadata
 import json
 from pathlib import Path
 import sys
@@ -34,7 +35,7 @@ class RejectRepositoryTools(importlib.abc.MetaPathFinder):
             raise AssertionError('Core imported repository tool: ' + fullname)
 
 sys.meta_path.insert(0, RejectRepositoryTools())
-from stprotein2 import STProtein2, ModelConfig, export_run, load_bundle, predict_file
+from stprotein2 import STProtein2, ModelConfig, export_run, load_bundle, predict_file, __version__
 from stprotein2.paths import PACKAGE_ROOT
 from stprotein2.provenance import sources
 from stprotein2.io import sha256
@@ -45,7 +46,8 @@ for name in ('evaluation', 'research', 'resources'):
     assert not (PACKAGE_ROOT / name).exists(), name
 expected = {str(p.relative_to(root)): sha256(p) for p in sorted((root/'stprotein2').rglob('*.py'))}
 assert sources() == expected
-for command in ([], ['train', '--help'], ['prepare', '--help'], ['export', '--help'], ['predict', '--help']):
+assert importlib.metadata.version('stprotein2') == __version__
+for command in ([], ['--version'], ['train', '--help'], ['prepare', '--help'], ['export', '--help'], ['predict', '--help']):
     try:
         cli.main(command)
     except SystemExit as error:

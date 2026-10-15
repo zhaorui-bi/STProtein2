@@ -11,6 +11,7 @@ data/
 demo/
 exports/
 predictions/
+reports/
 vendor/
 external/
 catboost_info/

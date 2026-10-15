@@ -4,6 +4,7 @@
 
 | Command | Purpose |
 |---|---|
+| `stprotein2 --version` | Display the installed software version |
 | `stprotein2 prepare` | Prepare independent reference-only anchors |
 | `stprotein2 train` | Fit the current model, select gates and predict the held query group |
 | `stprotein2 export` | Export a completed run into a self-contained bundle |
@@ -13,7 +14,22 @@
 
 ## Repository evaluation
 
-From a source checkout, `python -m evaluation --registry registry.json --output runs/query` scores a completed training run using measured query ADT. Evaluation is a separate repository tool and is excluded from the core wheel. See [evaluation/README.md](../evaluation/README.md) for the input contract and extended metrics.
+Evaluation tools run from a source checkout after installing the core. They do not load or modify the fitted model.
+
+```bash
+# Completed grouped training run; use a separate report directory.
+python -m evaluation run --registry registry.json --output runs/query \
+  --report-dir reports/query --extended --cluster-counts 4 6 8
+
+# Standalone stprotein2 predict output; requires no bundle or training files.
+python -m evaluation prediction --registry application_registry.json \
+  --prediction predictions/new_slice --output reports/new_slice \
+  --extended --cluster-counts 4 6 8
+```
+
+For standalone evaluation, the registry sample name must match `predict --sample`; its RNA file must match the prediction input checksum. Measured ADT is aligned by barcode and named protein. Spatial/domain metrics are optional; cluster counts must be distinct, prespecified and smaller than the number of query spots. The metric graph uses symmetric k=6/radius=2.5 physical neighborhoods.
+
+Reports bind input, prediction, code and metric-setting checksums. Repeating an identical completed evaluation verifies and returns its report; changed settings need a fresh report directory. The earlier flag-only `python -m evaluation --registry ... --output ...` remains an alias for `run`. See [the evaluation guide](../evaluation/README.md) for report schemas and metric definitions.
 
 ## Python
 
@@ -33,7 +49,7 @@ predict_file(
 
 ## Registry and groups
 
-A registry is a JSON list with `name`, `rna` and `adt` fields:
+A registry is a nonempty JSON list with unique `name` values and `rna`/`adt` paths. Relative paths resolve against the registry file directory. Sample names must be usable as one directory component, and group IDs must be nonempty strings:
 
 ```json
 [
@@ -54,3 +70,7 @@ The archived configuration retains `anchor_cache_policy=reuse_frozen` and needs 
 RNA `.X` contains finite nonnegative integer counts. Gene identifiers and spot barcodes must be unique, and `.obsm['spatial']` supplies finite two-dimensional coordinates. Partial measured-gene overlap is reported; zero overlap is rejected. Supply one complete slice because cropping changes neighborhoods and centering.
 
 Outputs include `prediction.h5ad`, `prediction.npz`, diagnostics, a manifest and a completion marker. Named protein/spot axes, component arrays and gene coverage accompany predictions. Bundles contain trusted Python preprocessing objects; checksums verify integrity.
+
+## Configuration validation
+
+Unknown configuration keys are rejected. Dimensions, seeds and iteration counts must be integers; rates, temperatures, optimizer settings and graph parameters must be finite and satisfy their declared bounds. Invalid settings fail before cohort files are opened. `configs/latest.json` and `configs/demo.json` contain complete working examples.

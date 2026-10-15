@@ -1,42 +1,36 @@
 {
-  "source_layout_version": "0.3.0.dev0",
+  "software_version": "0.3.0.dev1",
   "algorithm_configuration": "v2.1",
-  "selected_regression": {
-    "passed": 33,
-    "skipped": 1,
-    "warnings": 1,
-    "seconds": 246.82
-  },
   "full_regression": {
-    "passed": 100,
+    "passed": 129,
     "skipped": 7,
     "warnings": 1,
-    "seconds": 212.83,
-    "command": "python -m pytest -q",
-    "location": "local filesystem copy; complete core/research/evaluation Python AST equality verified after trailing-whitespace cleanup"
+    "seconds": 1342.13,
+    "command": "python -m pytest -q"
   },
-  "additional_research_export_regression": {
-    "passed": 1,
-    "seconds": 7.36,
-    "command": "python -m pytest -q tests/test_deploy.py::test_research_export_checks_experiment_sources_but_bundle_needs_only_core"
+  "parallel_regression": {
+    "passed": 129,
+    "skipped": 7,
+    "warnings": 1,
+    "seconds": 511.46,
+    "command": "python -m pytest -n 4 -q"
   },
-  "total_unique_passing_tests": 101,
+  "validation_environment": {
+    "device": "CPU; CUDA hidden",
+    "omp_threads": 2,
+    "openblas_threads": 2,
+    "pytest": "9.1.1",
+    "pytest_xdist": "3.8.0"
+  },
+  "tested_runtime_and_test_sources_byte_identical_to_checkout": true,
+  "distribution_metadata_strict_check": {
+    "wheel": "passed",
+    "source_archive": "passed"
+  },
   "structure": {
-    "current_core_operator_trainer_ast_equal": [
-      "models/residual.py",
-      "models/spatial.py",
-      "models/anchor.py",
-      "models/prototypes.py",
-      "models/sheaf.py",
-      "training/trainer.py"
-    ],
-    "historical_functions_preserved": [
-      "fit",
-      "select_alpha",
-      "permute_graph"
-    ],
-    "wheel_only_core_namespace": true,
-    "source_archive_contains_evaluation_research_docs": true
+    "model_and_current_trainer_ast_equal_to_previous_commit": true,
+    "core_only_wheel": true,
+    "source_archive_includes_repository_tools": true
   },
   "numerical_parity": {
     "nonzero_component_exact_parity": true,
@@ -52,14 +46,13 @@
     "gradient_tensors": 72
   },
   "actual_training_before_after": {
-    "before_0_2_after_0_3_actual_training_exact_parity": true,
-    "checkpoint_tensors": 72,
-    "prediction_components": [
+    "checkpoint_tensors_exactly_equal": 72,
+    "prediction_components_exactly_equal": [
       "prediction",
       "base",
+      "rna_base",
       "state_delta",
       "local_delta",
-      "rna_base",
       "spatial_basis_delta"
     ]
   },
@@ -86,5 +79,16 @@
       "joblib": "1.6.0"
     }
   },
+  "evaluation": {
+    "standalone_without_model_or_training_files": true,
+    "standard_and_extended_cli": true,
+    "complete_panel_metrics_and_undefined_coverage": true,
+    "frozen_report_and_input_integrity": true,
+    "legacy_training_run_interface": true
+  },
+  "ci_matrix": [
+    "3.10",
+    "3.12"
+  ],
   "remote_ci": "Separate from the local validation record; see repository Actions."
 }

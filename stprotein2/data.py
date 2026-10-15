@@ -204,12 +204,29 @@ class Cohort:
     def __init__(self, registry, groups=None):
         self.registry_path = Path(registry).resolve()
         entries = json.loads(self.registry_path.read_text())
-        if not isinstance(entries, list) or len({s["name"] for s in entries}) != len(entries):
-            raise ValueError("Registry requires unique sample names")
-        self.specs = {s["name"]: s for s in entries}
-        self.groups = groups or {name: name for name in self.specs}
+        if not isinstance(entries, list) or not entries:
+            raise ValueError('Registry requires a nonempty list of samples')
+        self.specs = {}
+        for entry in entries:
+            if not isinstance(entry, dict) or not {'name', 'rna', 'adt'} <= set(entry):
+                raise ValueError('Every registry sample requires name, rna and adt fields')
+            name = entry['name']
+            if (not isinstance(name, str) or not name or name in {'.', '..'}
+                    or any(c in name for c in ('/', '\\', '\0')) or name in self.specs):
+                raise ValueError('Registry requires unique sample names usable as directory names')
+            spec = dict(entry)
+            for modality in ('rna', 'adt'):
+                source = spec[modality]
+                if not isinstance(source, str) or not source:
+                    raise ValueError(f'Registry {modality} paths must be nonempty strings')
+                if not Path(source).is_absolute():
+                    spec[modality] = str((self.registry_path.parent / source).resolve())
+            self.specs[name] = spec
+        self.groups = dict(groups) if groups is not None else {name: name for name in self.specs}
         if set(self.groups) != set(self.specs):
             raise ValueError("Every sample requires a declared group")
+        if any(not isinstance(group, str) or not group for group in self.groups.values()):
+            raise ValueError('Group identifiers must be nonempty strings')
         self._rna = {}
         self.protein_reads = []
 

@@ -48,9 +48,9 @@ def test_public_commands_forward_to_current_stages(monkeypatch):
 def test_measured_adt_scoring_has_its_own_repository_entry_point(monkeypatch):
     from evaluation import score
     calls = []
-    monkeypatch.setattr(score, 'score', lambda registry, output: calls.append((registry, output)))
+    monkeypatch.setattr(score, 'score', lambda registry, output, **kwargs: calls.append((registry, output, kwargs)))
     score.main(['--registry', 'registry.json', '--output', 'finished'])
-    assert calls == [('registry.json', 'finished')]
+    assert calls == [('registry.json', 'finished', {'extended': False, 'cluster_counts': (4, 6, 8), 'report_dir': None})]
     with pytest.raises(SystemExit) as error:
         cli.main(['score'])
     assert error.value.code == 2

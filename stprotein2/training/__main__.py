@@ -1,5 +1,6 @@
 """Bounded allocator worker; do not silently switch device or training settings."""
 import argparse
+import math
 import torch
 
 from stprotein2.training.nested import run_nested
@@ -16,8 +17,8 @@ def main(argv=None):
     parser.add_argument('--reuse-anchor-cache',action='append',default=[])
     parser.add_argument('--cuda-allocator-gib',type=float,default=4.)
     args=parser.parse_args(argv)
-    if args.cuda_allocator_gib<=0:
-        parser.error('Allocator ceiling must be positive')
+    if not math.isfinite(args.cuda_allocator_gib) or args.cuda_allocator_gib<=0:
+        parser.error('Allocator ceiling must be finite and positive')
     if args.device.startswith('cuda'):
         if not torch.cuda.is_available():
             raise RuntimeError('Requested CUDA unavailable')

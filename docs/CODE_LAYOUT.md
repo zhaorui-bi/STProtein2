@@ -22,7 +22,8 @@ stprotein2/cli.py
       → gates.py
   → inference/bundle.py
 
-evaluation/__main__.py → evaluation/score.py → completed predictions + measured ADT
+evaluation/__main__.py → cli.py → score.py / prediction.py
+  → completed predictions + measured ADT
 research/             → core components and separate experimental protocols
 ```
 
@@ -47,4 +48,4 @@ Training configuration inheritance and inference loaders retain reusable support
 
 Core source hashes cover only `stprotein2/**/*.py` and match between a checkout and its built wheel. Repository edits to metrics, experiments or documentation do not change core cache/bundle identities. Research manifests additionally bind research/evaluation code and dated protocols; scoring records evaluation sources separately. Exported bundles snapshot only the runtime core.
 
-The source-layout version is `0.3.0.dev0`; the algorithm configuration remains v2.1. Existing 0.1/0.2 artifacts remain tied to their matching source hashes/environments. New training and export require fresh output/cache locations. See [CHANGELOG.md](../CHANGELOG.md) for interface migration and [the validation record](LAYOUT_VALIDATION.md) for current checks.
+The source-layout version is `0.3.0.dev1`; the algorithm configuration remains v2.1. Existing 0.1/0.2 artifacts remain tied to their matching source hashes/environments. New training and export require fresh output/cache locations. See [CHANGELOG.md](../CHANGELOG.md) for interface migration and [the validation record](LAYOUT_VALIDATION.md) for current checks.

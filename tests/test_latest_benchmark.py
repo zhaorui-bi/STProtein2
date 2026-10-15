@@ -59,6 +59,13 @@ def test_four_source_actual_training_closed_gates_and_missing_query_ADT(tmp_path
     spec=importlib.util.spec_from_file_location('latest_benchmark_scorer',path)
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
     assert set(module.score(registry,outer))=={'s4'}
+    extended = outer / 'extended_report'
+    scores = module.score(registry, outer, extended=True, report_dir=extended)
+    assert 'moran_alignment_MAE' in scores['s4'] and 'ari' in scores['s4']
+    assert module.score(registry, outer, extended=True, report_dir=extended) == scores
+    (extended / 'development_scores.json').write_text('{}')
+    with pytest.raises(RuntimeError, match='Artifact missing or changed'):
+        module.score(registry, outer, extended=True, report_dir=extended)
 
 
 def test_CF0_still_requires_six_groups_before_accessing_registry(tmp_path):

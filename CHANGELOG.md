@@ -1,5 +1,16 @@
 # Change log
 
+## 0.3.0.dev1
+
+- Add evaluation of standalone prediction directories without a model/training dependency; preserve the training-run evaluation interface and allow separate report destinations.
+- Expose optional spatial/domain metrics in both evaluation commands. Add complete-panel protein correlations, mean spot correlation, macro protein RMSE and explicit undefined coverage.
+- Verify completed evaluation reports before reuse; reject incomplete paired comparisons and invalid metric directions/tolerances.
+- Reject invalid numeric configurations before training and resolve relative registry paths against the registry directory.
+- Add a lightweight `--version` command, one source for package version metadata, documentation navigation and troubleshooting.
+- Validate distributions and dependencies and run CI on Python 3.10 and 3.12.
+
+Model equations and the v2.1 algorithm configuration are unchanged. Core source checksums change; new training needs fresh cache/output directories, while existing artifacts need their matching environment.
+
 ## 0.3.0.dev0
 
 - Move measured-ADT evaluation to repository-level `evaluation/` and historical experiments to `research/`.

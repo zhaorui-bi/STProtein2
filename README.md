@@ -4,7 +4,7 @@
 
 ![STProtein2 framework](fig/framework.png)
 
-The installable **`stprotein2`** package contains the core software. Evaluation tools and research experiments live in separate repository directories. The current algorithm configuration is v2.1; the source-layout version is `0.3.0.dev0`.
+The installable **`stprotein2`** package contains the core software. Evaluation tools and research experiments live in separate repository directories. The current algorithm configuration is v2.1; the source-layout version is `0.3.0.dev1`.
 
 ## Code structure
 
@@ -76,7 +76,7 @@ stprotein2 predict \
   --sample query --output demo/prediction --device cpu
 ```
 
-Use `stprotein2 --help` and `stprotein2 train --help` for available commands and options. `python -m stprotein2` provides the same interface. The older `stprotein2-train` and `stprotein2-predict` console aliases remain available.
+Use `stprotein2 --version` to identify the installation, and `stprotein2 --help` or `stprotein2 train --help` for available commands and options. `python -m stprotein2` provides the same interface. The older `stprotein2-train` and `stprotein2-predict` console aliases remain available.
 
 ## Real-data training and prediction
 
@@ -101,10 +101,16 @@ stprotein2 predict \
 Prediction needs the bundle and one complete RNA slice. Outputs include named `prediction.h5ad`, numerical prediction components, gene-coverage diagnostics and integrity manifests. If query ADT is available, score completed predictions separately:
 
 ```bash
-python -m evaluation --registry /path/registry.json --output runs/query
+python -m evaluation run \
+  --registry /path/registry.json --output runs/query \
+  --report-dir reports/query --extended --cluster-counts 4 6 8
+
+python -m evaluation prediction \
+  --registry /path/application_registry.json --prediction predictions/new_slice \
+  --output reports/new_slice --extended --cluster-counts 4 6 8
 ```
 
-Evaluation commands run from the repository root after installing the core package. See the [evaluation guide](evaluation/README.md) for metrics and inputs, and the [research guide](research/README.md) for experimental controls. Neither directory is included in the core wheel.
+Evaluation commands run from the repository root after installing the core package. See the [evaluation guide](evaluation/README.md) for metrics and inputs, and the [research guide](research/README.md) for experimental controls. The application registry must name the sample passed to `predict --sample` and supply its original RNA file and measured ADT. Neither evaluation nor research is included in the core wheel.
 
 ## Validation and provenance
 
@@ -113,9 +119,9 @@ python -m pip install -e '.[test]'
 python -m pytest -q
 ```
 
-The [layout validation record](docs/LAYOUT_VALIDATION.md) reports the checks for this reorganization. Source-integrity checks use the same unified package paths in editable and wheel installations. Historical development protocols and earlier validation evidence are retained in [`docs/history/`](docs/history/). See [CONTRIBUTING.md](CONTRIBUTING.md) for development, testing and packaging.
+The [layout validation record](docs/LAYOUT_VALIDATION.md) reports the checks for this reorganization. Source-integrity checks use the same unified package paths in editable and wheel installations. Historical development protocols and earlier validation evidence are retained in [`docs/history/`](docs/history/). See [the documentation index](docs/README.md), [troubleshooting](docs/TROUBLESHOOTING.md) and [CONTRIBUTING.md](CONTRIBUTING.md) for use and development.
 
-Layout changes alter source identities. Use fresh cache and output directories with 0.3; retain the matching environment for older runs and bundles. See [the change log](CHANGELOG.md) for migration details.
+Layout changes alter source identities. Use fresh cache and output directories with the current version; retain the matching environment for older runs and bundles. See [the change log](CHANGELOG.md) for migration details.
 
 ## References and license
 

@@ -1,5 +1,22 @@
 """Explicit, serializable experimental settings; unknown keys are rejected."""
 from dataclasses import asdict, dataclass, fields
+import math
+from numbers import Real
+
+
+def _integer(name, value, minimum=1):
+    if isinstance(value, bool) or not isinstance(value, int) or value < minimum:
+        raise ValueError(f"{name} must be an integer >= {minimum}")
+
+
+def _finite(name, value, minimum=0, *, strict=False):
+    if (isinstance(value, bool) or not isinstance(value, Real) or not math.isfinite(value)
+            or (value <= minimum if strict else value < minimum)):
+        if minimum == 0:
+            bound = 'positive' if strict else 'nonnegative'
+        else:
+            bound = f"{'>' if strict else '>='} {minimum}"
+        raise ValueError(f"{name} must be finite and {bound}")
 
 
 @dataclass(frozen=True)
@@ -31,8 +48,13 @@ class ModelConfig:
         for key in ("n_genes", "n_proteins", "width", "hidden", "members", "qc_dim",
                     "state_prototypes", "niche_prototypes", "prototype_dim", "experts",
                     "stalk", "channels", "protein_embedding"):
-            if getattr(self, key) < 1:
-                raise ValueError(f"{key} must be positive")
+            _integer(key, getattr(self, key))
+        for key in ('use_encoder_qc', 'use_state', 'use_niche', 'protein_conditioning',
+                    'center_local', 'checkpoint_blocks'):
+            if not isinstance(getattr(self, key), bool):
+                raise ValueError(f"{key} must be boolean")
+        _finite('dropout', self.dropout)
+        _finite('prototype_temperature', self.prototype_temperature, strict=True)
         if self.local_operator not in {"csnn", "gat", "none"}:
             raise ValueError("Unknown local operator")
         if not 0 <= self.dropout < 1 or self.prototype_temperature <= 0:
@@ -77,14 +99,27 @@ class TrainConfig:
     seed: int = 2025
 
     def __post_init__(self):
-        if min(self.epochs, self.validate_every, self.patience, self.core_size, self.threads) < 1:
-            raise ValueError("Epochs, intervals, threads and core size must be positive")
+        for key in ('epochs', 'validate_every', 'patience', 'core_size', 'threads',
+                    'min_core', 'max_core', 'graph_k', 'count_views_per_rate'):
+            _integer(key, getattr(self, key))
+        for key in ('warmup_epochs', 'prototype_ramp_epochs', 'seed'):
+            _integer(key, getattr(self, key), minimum=0)
+        for key in ('lr', 'clip_grad', 'teacher_temp_start', 'teacher_temp_end', 'graph_radius'):
+            _finite(key, getattr(self, key), strict=True)
+        for key in ('weight_decay', 'base_weight', 'state_weight', 'niche_weight',
+                    'center_momentum', 'ema_start', 'ema_end'):
+            _finite(key, getattr(self, key))
+        if self.center_momentum >= 1:
+            raise ValueError('center_momentum must be in [0, 1)')
         if not 0 <= self.warmup_epochs <= self.epochs:
             raise ValueError("Warm-up must be within the training budget")
         if not 0 < self.ema_start <= self.ema_end < 1:
             raise ValueError("Invalid EMA schedule")
         if not self.mask_rates or any(not 0 <= r < 1 for r in self.mask_rates):
             raise ValueError("Invalid masking rates")
+        for key in ('mask_rates', 'count_keep_rates'):
+            for value in getattr(self, key):
+                _finite(key, value)
         if not self.count_keep_rates or 1.0 not in self.count_keep_rates or any(not 0 < r <= 1 for r in self.count_keep_rates):
             raise ValueError("Count keep rates must include 1 and remain within (0, 1]")
         if len(set(self.count_keep_rates)) != len(self.count_keep_rates) or self.count_views_per_rate < 1:

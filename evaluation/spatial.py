@@ -21,7 +21,7 @@ def spatial_statistics(values, graph):
     x = np.asarray(values, dtype=np.float64)
     if x.ndim == 1:
         x = x[:, None]
-    if x.ndim != 2 or len(x) != graph.n or not np.isfinite(x).all():
+    if x.ndim != 2 or not all(x.shape) or len(x) != graph.n or not np.isfinite(x).all():
         raise ValueError('Finite N x P spatial values required')
     row, col = graph.edge_index
     z = x - x.mean(0)
@@ -47,8 +47,12 @@ def agreement(truth, prediction):
 
 def extended_metrics(truth, prediction, graph, cluster_counts=(4, 6, 8)):
     y, p = np.asarray(truth, dtype=np.float64), np.asarray(prediction, dtype=np.float64)
-    if y.shape != p.shape or y.ndim != 2 or not np.isfinite(y).all() or not np.isfinite(p).all():
+    if y.shape != p.shape or y.ndim != 2 or not all(y.shape) or not np.isfinite(y).all() or not np.isfinite(p).all():
         raise ValueError('Matching finite protein matrices required')
+    cluster_counts = tuple(cluster_counts)
+    if (not cluster_counts or len(set(cluster_counts)) != len(cluster_counts)
+            or any(isinstance(k, bool) or not isinstance(k, int) or not 2 <= k < len(y) for k in cluster_counts)):
+        raise ValueError('Distinct valid prespecified integer cluster counts required')
     measured, predicted, residual = [spatial_statistics(v, graph) for v in (y, p, p-y)]
     result = {}
     for statistic in ('moran', 'geary'):
@@ -78,6 +82,14 @@ def extended_metrics(truth, prediction, graph, cluster_counts=(4, 6, 8)):
 
 def compare(reference, candidate, expected_queries, expected_seeds, keys=PAPER_DIRECTIONS, tolerance=1e-10):
     """Never pool partial panels or choose favorable seeds; preserve every failed cell."""
+    expected_queries, expected_seeds = tuple(expected_queries), tuple(expected_seeds)
+    if (not expected_queries or not expected_seeds or len(set(expected_queries)) != len(expected_queries)
+            or len(set(expected_seeds)) != len(expected_seeds)):
+        raise ValueError('Distinct nonempty expected queries and seeds required')
+    if not keys or any(direction not in {'lower', 'higher', 'diagnostic'} for direction in keys.values()):
+        raise ValueError('Metric directions must be lower, higher or diagnostic')
+    if not np.isfinite(tolerance) or tolerance < 0:
+        raise ValueError('Finite nonnegative comparison tolerance required')
     expected = {(q, s) for q in expected_queries for s in expected_seeds}
     def indexed(rows):
         result = {(r['query'], r['seed']): r for r in rows}
@@ -85,6 +97,8 @@ def compare(reference, candidate, expected_queries, expected_seeds, keys=PAPER_D
             raise ValueError('Missing, duplicate or unexpected paired query/seed coverage')
         return result
     a, b = indexed(reference), indexed(candidate)
+    if any(not set(keys) <= set(row) for row in (*a.values(), *b.values())):
+        raise ValueError('Every paired record must contain all requested metrics')
     cells = []
     for query in expected_queries:
         for metric, direction in keys.items():
