@@ -9,8 +9,8 @@ import numpy as np
 import pytest
 
 from stprotein2.data import Cohort
-from stprotein2_balanced_training.config import BalancedTrainConfig
-from stprotein2_latest_benchmark import nested
+from stprotein2.training.config import BalancedTrainConfig
+import stprotein2.research.cohort_v1.nested as nested
 from test_crossfit import cohort_files, configs
 
 

@@ -8,9 +8,9 @@ import torch
 from stprotein2.config import ModelConfig
 from stprotein2.data import RNAView
 from stprotein2.graph import physical_graph
-from stprotein2.model import STProtein2
-from stprotein2.prototypes import EMATeacher
-from stprotein2_balanced_initialization import sample_references, fit_router, initialize_prototypes
+from stprotein2.models.residual import STProtein2
+from stprotein2.models.prototypes import EMATeacher
+from stprotein2.training.initialization import sample_references, fit_router, initialize_prototypes
 
 
 def view(name,group,n,seed=1):

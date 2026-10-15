@@ -7,9 +7,9 @@ import torch
 
 from stprotein2.config import ModelConfig
 from stprotein2.graph import complete_halo, physical_graph, partition_graph, validate_partition
-from stprotein2.model import STProtein2, center_local
-from stprotein2.prototypes import EMATeacher
-from stprotein2.sheaf import normalized_coefficients, cooperative_operator
+from stprotein2.models.residual import STProtein2, center_local
+from stprotein2.models.prototypes import EMATeacher
+from stprotein2.models.sheaf import normalized_coefficients, cooperative_operator
 from scipy.sparse.csgraph import connected_components
 
 

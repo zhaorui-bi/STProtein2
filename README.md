@@ -1,20 +1,51 @@
 # STProtein2
 
-STProtein2 predicts a fixed panel of **31 spatial protein targets from RNA and spatial coordinates**, using a frozen spatial anchor and prototype-guided residual corrections. This repository contains the standalone implementation of the current **v2.1 architecture**, extracted from [STProtein](https://github.com/zhaorui-bi/STProtein).
+**Spatial RNA-to-protein prediction with a frozen spatial anchor and prototype-guided residual corrections.** STProtein2 takes RNA counts and spatial coordinates and predicts a fixed panel of 31 centered-log protein targets.
 
 ![STProtein2 framework](fig/framework.png)
 
-The current configuration uses an eight-member RNA ensemble, 32 state prototypes, 16 niche prototypes, four cooperative sheaf experts, hierarchical reference-only initialization, C0 in-fit residual targets, no EMA teacher, and full-graph execution. Its prediction is:
+This repository uses one Python package, **`stprotein2`**. The current algorithm is the v2.1 configuration; version `0.2.0.dev0` introduces the unified source layout and command-line interface.
+
+## Code structure
+
+```text
+STProtein2/
+├── stprotein2/                 # The single installable source package
+│   ├── models/                # Frozen anchor, RNA encoder, prototypes and sheaf experts
+│   ├── training/              # Initialization, residual training and nested selection
+│   ├── inference/             # Bundle export, loading and RNA-only prediction
+│   ├── evaluation/            # Prediction metrics, spatial metrics and separate ADT scoring
+│   ├── execution/             # Memory policies and graph partitioning
+│   ├── research/              # Historical controls used by regression tests
+│   ├── resources/             # Packaged protocol records
+│   ├── data.py                # RNA/ADT data contracts and reference-fitted preprocessing
+│   ├── graph.py               # Spatial graphs and frozen routing
+│   ├── gates.py               # Per-protein validation switches
+│   ├── config.py              # Shared model configuration
+│   ├── provenance.py          # Shared source hashes and immutable snapshots
+│   └── cli.py                 # Public command dispatcher
+├── configs/                   # Current full-size and small demo configurations
+├── examples/                  # Synthetic input generator
+├── tests/                     # Unit, training and deployment regression tests
+├── docs/                      # Architecture, API and validation notes
+└── fig/                       # Framework figure and legend
+```
+
+Start with [`models/spatial.py`](stprotein2/models/spatial.py) for the complete model, [`training/nested.py`](stprotein2/training/nested.py) for the supported training pipeline, and [`inference/bundle.py`](stprotein2/inference/bundle.py) for deployment. [The code map](docs/CODE_LAYOUT.md) explains each component and the migration from the first upload.
+
+## Method
+
+The current configuration uses an eight-member RNA ensemble, 32 state prototypes, 16 niche prototypes and four cooperative sheaf experts. A separately fitted, frozen Ridge anchor plus a fixed centered spatial basis provides the base prediction. State and local residuals are added through reference-selected binary switches for each protein:
 
 $$\widehat{Y}=B_{\mathrm{sp}}+\gamma_{\mathrm{state}}\Delta_{\mathrm{state}}+\gamma_{\mathrm{local}}\Delta_{\mathrm{local}}.$$
 
-The independently fitted Ridge anchor and fixed centered spatial basis form $B_{\mathrm{sp}}$. State and local corrections have separate binary switches for each protein, selected using reference-only held-out evaluation. The switches require at least four validation units, mean relative MSE improvement of at least 1%, and improvement in at least 60% of units. Closed switches reproduce the frozen spatial base exactly.
+`configs/latest.json` specifies hierarchical reference-only initialization, C0 in-fit residual targets, no EMA teacher, full-graph execution and spatial coefficient 0.5. Query ADT is used only by the separate scoring command. [Architecture details](docs/ARCHITECTURE.md) describe the target panel and validation rules.
 
-This is a research implementation. Independent confirmation of neural residual gains and superiority over competing methods remains in progress. The framework illustration is schematic and contains no benchmark measurements.
+This remains a research implementation. Independent confirmation of residual gains and superiority over competitors is ongoing; the framework image is schematic.
 
 ## Install
 
-Python 3.10 or newer is required. PyTorch, NumPy, SciPy, scikit-learn, pandas, AnnData, joblib and threadpoolctl are declared in `pyproject.toml`.
+Python 3.10 or newer is required.
 
 ```bash
 git clone https://github.com/zhaorui-bi/STProtein2.git
@@ -25,79 +56,54 @@ python -m pip install --upgrade pip
 python -m pip install -e '.[test]'
 ```
 
-The default full-graph configuration does not require PyTorch Geometric, METIS or Leiden. Optional partition controls can be installed with `python -m pip install -e '.[test,partition]'`.
+Full-graph execution needs no PyTorch Geometric, METIS or Leiden. Optional partition controls use `python -m pip install -e '.[test,partition]'`.
 
-## Run a small standalone example
+## Quick start
 
-The example generates synthetic RNA and reference ADT files locally. Query ADT is absent. It reduces model size and uses three epochs to exercise installation, nested training, export and RNA-only inference; it is not an accuracy benchmark. Three reference groups are insufficient to open the validation switches, so the selected prediction falls back to its spatial base.
+The small synthetic example exercises training, export and inference. It creates paired reference files and RNA-only query input. Its reduced model and three-epoch budget are for installation checks. Three reference groups cannot open the validation switches, so the demo's selected prediction uses the spatial base.
 
 ```bash
 python examples/make_demo.py --output demo/data
 
-stprotein2-train run \
+stprotein2 train \
   --registry demo/data/registry.json --groups demo/data/groups.json \
   --config configs/demo.json --query query \
   --output demo/run --anchor-cache demo/anchors --device cpu
 
-stprotein2-predict export --run demo/run --output demo/bundle
+stprotein2 export --run demo/run --output demo/bundle
 
-stprotein2-predict predict \
+stprotein2 predict \
   --bundle demo/bundle --rna demo/data/query_rna.h5ad \
   --sample query --output demo/prediction --device cpu
 ```
 
-## Train with paired references
+Use `stprotein2 --help` and `stprotein2 train --help` for available commands and options. `python -m stprotein2` provides the same interface. The older `stprotein2-train` and `stprotein2-predict` console aliases remain available.
 
-RNA input is an AnnData `.h5ad` with raw nonnegative integer counts in `.X`, unique gene IDs in `.var_names`, unique spot barcodes in `.obs_names`, and two-dimensional coordinates in `.obsm['spatial']`. ADT reference files contain raw counts for the named 31-antibody [panel](docs/ARCHITECTURE.md), with matching spot barcodes. The target is row-centered `log1p` ADT expression, and predictions may be negative.
+## Real-data training and prediction
 
-A registry is a JSON list of records:
-
-```json
-[
-  {"name": "reference_a", "rna": "/path/reference_a_rna.h5ad", "adt": "/path/reference_a_adt.h5ad"},
-  {"name": "reference_b", "rna": "/path/reference_b_rna.h5ad", "adt": "/path/reference_b_adt.h5ad"},
-  {"name": "query", "rna": "/path/query_rna.h5ad", "adt": "/path/query_adt_not_used.h5ad"}
-]
-```
-
-The registry excerpt illustrates the format; a C0 run needs at least four cohort groups. Supply `groups.json` as `{"groups": {"reference_a": "source_a", "reference_b": "source_b", "query": "held_source"}}`, including every sample. All slices sharing the query group are held out together. Use source/donor groups appropriate to the scientific question; separate slice IDs do not establish donor independence. At least four reference groups after query exclusion are needed to generate gate evidence. Every inner fit refits preprocessing and initialization on its allowed reference subset.
+RNA files are AnnData `.h5ad` objects with raw nonnegative integer counts in `.X`, unique gene IDs and spot barcodes, and two-dimensional coordinates in `.obsm['spatial']`. Reference ADT files contain raw counts for the 31 named targets, aligned by spot barcode. Inputs and grouping examples are documented in [the API guide](docs/API.md).
 
 ```bash
-stprotein2-train prepare \
-  --registry /path/registry.json --groups /path/groups.json \
-  --config configs/latest.json --query query \
-  --output runs/query --anchor-cache cache/anchors --device cpu
-
-stprotein2-train run \
+stprotein2 train \
   --registry /path/registry.json --groups /path/groups.json \
   --config configs/latest.json --query query \
   --output runs/query --anchor-cache cache/anchors --device cuda \
   --cuda-allocator-gib 8
-```
 
-`prepare` builds reference-only anchors on CPU; `run` also works without a separate preparation step. Use `--device cpu` for CPU training. The allocator setting caps the process's CUDA allocator; it does not guarantee that a particular dataset will fit.
+stprotein2 export --run runs/query --output exports/query_model
 
-`configs/latest.json` matches the current algorithm and sets `anchor_cache_policy` to `fit` for a fresh clone. The archived `balanced_C0_hierarchical_none_v1.json` retains the original `reuse_frozen` policy and requires a completed matching anchor cache.
-
-## Export and predict
-
-```bash
-stprotein2-predict export --run runs/query --output exports/query_model
-
-stprotein2-predict predict \
+stprotein2 predict \
   --bundle exports/query_model --rna /path/new_slice_rna.h5ad \
   --sample new_slice --output predictions/new_slice --device cpu
 ```
 
-Prediction requires only the exported bundle and one complete RNA slice. Output files include named `prediction.h5ad`, `prediction.npz`, component predictions, gene-coverage diagnostics and integrity manifests. The latest initialization and execution configuration is restored from the checkpoint. Bundles are trusted Python model artifacts; their checksums check integrity.
+`stprotein2 prepare` accepts the training arguments and builds reference-only anchors before training. `train` also prepares them when needed. The CUDA allocator setting is a process allocator cap, not a guarantee that a dataset fits.
 
-If query ADT is available, score completed predictions separately:
+Prediction needs the bundle and one complete RNA slice. Outputs include named `prediction.h5ad`, numerical prediction components, gene-coverage diagnostics and integrity manifests. If query ADT is available, score completed predictions separately:
 
 ```bash
-python scripts/score_extended_baseline.py --registry /path/registry.json --output runs/query
+stprotein2 score --registry /path/registry.json --output runs/query
 ```
-
-Additional spatial and domain metrics are available in `stprotein2_dpas_evaluation`.
 
 ## Validation and provenance
 
@@ -105,16 +111,12 @@ Additional spatial and domain metrics are available in `stprotein2_dpas_evaluati
 python -m pytest -q
 ```
 
-Tests cover frozen-anchor behavior, nonzero corrections, sheaf operators, reference/query separation, nested epoch and gate selection, checkpoint recovery, full/partition parity, model export and RNA-only prediction. Optional native partition and CUDA tests depend on their runtimes. [Release validation](docs/RELEASE_VALIDATION.md) records the actual checks completed for this snapshot.
-
-The release includes the current algorithm and the training/deployment dependency chain. Historical method alternatives required by that chain retain their original module names. Shared baseline helpers are used for artifact verification; external competitor training adapters require the original research workspace and are not standalone benchmark entry points here. Large datasets, fitted checkpoints, run caches, third-party source checkouts and the original STProtein model are not distributed.
-
-The [source snapshot](docs/source_snapshot.json) records the original files and extraction changes. Dated protocol documents preserve development provenance; `configs/latest.json` and [the architecture description](docs/ARCHITECTURE.md) specify the configuration presented here. The framework [legend](fig/framework.caption.md) and [image-generation prompt](fig/framework.prompt.txt) accompany the figure.
+The [layout validation record](docs/LAYOUT_VALIDATION.md) reports the checks for this reorganization. Source-integrity checks use the same unified package paths in editable and wheel installations. Historical development protocols and first-upload evidence are retained in [`docs/history/`](docs/history/).
 
 ## References and license
 
 - [STProtein: predicting spatial protein expression from multi-omics data](https://arxiv.org/abs/2602.05811), Jiang et al., 2026.
-- [Cooperative Sheaf Neural Networks](https://proceedings.iclr.cc/paper_files/paper/2026/hash/ea1a7f7bc0fc14142106a84c94c826d0-Abstract-Conference.html), Ribeiro et al., ICLR 2026. The tensor implementation adapts the published operator; CSNN itself is prior work.
-- [Upstream implementation notes](docs/UPSTREAM.json) describe the independent BatchEnsemble-style RNA adaptation and preprocessing lineage.
+- [Cooperative Sheaf Neural Networks](https://proceedings.iclr.cc/paper_files/paper/2026/hash/ea1a7f7bc0fc14142106a84c94c826d0-Abstract-Conference.html), Ribeiro et al., ICLR 2026. CSNN is prior work; this repository independently adapts its operator.
+- [Upstream notes](docs/UPSTREAM.json) describe implementation and preprocessing lineage.
 
-The source retains the [GPL v3 license](LICENSE) of the original repository.
+Source code retains the [GPL v3 license](LICENSE) of [STProtein](https://github.com/zhaorui-bi/STProtein).

@@ -30,8 +30,20 @@ def save_torch(path, value):
 
 
 def source_manifest():
-    root = Path(__file__).parent
-    return {p.name: sha256(p) for p in sorted(root.glob("*.py"))}
+    from .provenance import sources
+    return sources()
+
+
+def verify_marker(output, filename):
+    """Verify a completed run and every artifact bound by its marker."""
+    output = Path(output)
+    marker = json.loads((output / filename).read_text())
+    if sha256(output / 'manifest.json') != marker['manifest_sha256']:
+        raise ValueError('Completed manifest identity changed')
+    for relative, checksum in marker['artifacts'].items():
+        if sha256(output / relative) != checksum:
+            raise ValueError('Completed artifact identity changed: ' + relative)
+    return marker
 
 
 def freeze_run(output, payload):

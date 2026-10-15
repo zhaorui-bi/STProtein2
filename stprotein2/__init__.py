@@ -1,7 +1,16 @@
-"""STProtein2 research implementation.
+"""Unified STProtein2 API; imports do not select a GPU or load data."""
+__version__ = "0.2.0.dev0"
 
-Importing the package does not load training data, change RNGs, or select a GPU.
-"""
+__all__ = ["STProtein2", "ModelConfig", "export_run", "load_bundle", "predict_file"]
 
-__version__ = "0.1.0.dev0"
-
+def __getattr__(name):
+    if name == "STProtein2":
+        from .models.spatial import SpatialAnchoredSTProtein2
+        return SpatialAnchoredSTProtein2
+    if name == "ModelConfig":
+        from .config import ModelConfig
+        return ModelConfig
+    if name in {"export_run", "load_bundle", "predict_file"}:
+        from .inference import bundle
+        return getattr(bundle, name)
+    raise AttributeError(name)

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "stprotein2"
-version = "0.1.0.dev0"
+version = "0.2.0.dev0"
 description = "Spatial RNA-to-protein prediction with a frozen anchor and prototype-guided residual corrections"
 requires-python = ">=3.10"
 readme = "README.md"
@@ -20,18 +20,18 @@ partition = ["pymetis==2025.2.2", "igraph==1.0.0", "leidenalg==0.12.0"]
 
 [project.scripts]
 stprotein2 = "stprotein2.cli:main"
-stprotein2-train = "stprotein2_latest_benchmark_v2.__main__:main"
-stprotein2-predict = "stprotein2_deploy.__main__:main"
+stprotein2-train = "stprotein2.training.__main__:main"
+stprotein2-predict = "stprotein2.inference.__main__:main"
 
 [project.urls]
 Repository = "https://github.com/zhaorui-bi/STProtein2"
 Issues = "https://github.com/zhaorui-bi/STProtein2/issues"
 
 [tool.setuptools.packages.find]
-include = ["stprotein2*"]
+include = ["stprotein2", "stprotein2.*"]
 
 [tool.setuptools.package-data]
-stprotein2_resources = ["docs/*.md", "scripts/*.py"]
+"stprotein2.resources" = ["docs/*.md"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

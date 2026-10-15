@@ -14,16 +14,16 @@ import torch
 from stprotein2.data import Cohort, PANEL, ReferenceTransform
 from stprotein2.graph import FrozenRouter
 from stprotein2.io import freeze_run, save_torch, sha256, write_json
-from stprotein2.model import STProtein2
-from stprotein2.trainer import predict
-from stprotein2_anchor.model import AnchoredSTProtein2
-from stprotein2_smoothing.experiment import predict as smooth_predict
-from stprotein2_spatial_anchor.model import SpatialAnchoredSTProtein2
-from stprotein2_spatial_anchor.prediction import predict as spatial_predict
-from stprotein2_spatial_anchor.config import SpatialAnchorTrainConfig
-from stprotein2_deploy.bundle import export_run, load_bundle, predict_file
-from stprotein2_balanced_training.config import BalancedTrainConfig
-from stprotein2_execution.memory import configure_execution, CheckpointRepresentations
+from stprotein2.models.residual import STProtein2
+from stprotein2.training.basic import predict
+from stprotein2.models.anchor import AnchoredSTProtein2
+from stprotein2.research.smoothing.experiment import predict as smooth_predict
+from stprotein2.models.spatial import SpatialAnchoredSTProtein2
+from stprotein2.training.prediction import predict as spatial_predict
+from stprotein2.training.config import SpatialAnchorTrainConfig
+from stprotein2.inference.bundle import export_run, load_bundle, predict_file
+from stprotein2.training.config import BalancedTrainConfig
+from stprotein2.execution.memory import configure_execution, CheckpointRepresentations
 from test_crossfit import cohort_files, configs
 
 

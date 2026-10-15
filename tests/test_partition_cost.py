@@ -7,9 +7,8 @@ import torch
 from scipy.sparse.csgraph import connected_components
 
 from stprotein2.graph import SpatialGraph, physical_graph, digest_array, validate_partition
-from stprotein2_partition.planner import (Budget, EmpiricalMemoryCost, PartitionPlan,
-    complete_halo_sparse, plan_partition)
-from stprotein2_partition_cost import refine_partition, plan_for_model
+from stprotein2.execution.planner import Budget, EmpiricalMemoryCost, PartitionPlan, complete_halo_sparse, plan_partition
+from stprotein2.execution.refinement import refine_partition, plan_for_model
 from test_architecture import setup_model
 
 

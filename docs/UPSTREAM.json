@@ -12,10 +12,15 @@
   "rna_backbone": {
     "source": "https://github.com/yandex-research/tabm",
     "implementation": "Independent BatchEnsemble-style multi-output RNA adaptation, not claimed to be the exact default TabM implementation.",
-    "differences": ["LayerNorm and RNA availability/QC pathways", "shared-member protein head", "no numeric feature embeddings"]
+    "differences": [
+      "LayerNorm and RNA availability/QC pathways",
+      "shared-member protein head",
+      "no numeric feature embeddings"
+    ]
   },
   "preprocessing": {
-    "source": "../DPAS-Graph/scripts/data_prep/02_stage2_make_hvgs_and_genes_model_v2.py",
-    "implementation": "Independent implementation of reference-intersection HVG ranking and selected-panel normalize-total/log1p; real six-reference audit found exact HVG order and 0.0 max standardized-feature difference against the historical author-function track."
+    "implementation": "Independent implementation of reference-intersection HVG ranking and selected-panel normalize-total/log1p; real six-reference audit found exact HVG order and 0.0 max standardized-feature difference against the historical author-function track.",
+    "origin_workspace_path": "../DPAS-Graph/scripts/data_prep/02_stage2_make_hvgs_and_genes_model_v2.py",
+    "runtime_dependency": false
   }
 }

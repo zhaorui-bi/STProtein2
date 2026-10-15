@@ -10,8 +10,8 @@ import torch
 from stprotein2.config import ModelConfig
 from stprotein2.data import RNAView, TrainingSlice
 from stprotein2.graph import FrozenRouter
-from stprotein2_anchor.config import AnchorTrainConfig
-from stprotein2_anchor import trainer
+from stprotein2.training.config import AnchorTrainConfig
+import stprotein2.research.anchor.trainer as trainer
 
 
 def test_checkpoint_policy_rejects_unreachable_residual_stage():

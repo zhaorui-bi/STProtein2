@@ -7,8 +7,9 @@ import numpy as np
 import pytest
 
 from stprotein2.graph import FrozenRouter
-from stprotein2_teacher_ablation_v2.identity import content_identity
-from stprotein2_teacher_ablation_v2 import nested, trainer
+from stprotein2.serialization import content_identity
+import stprotein2.research.teacher_recovery.nested as nested
+import stprotein2.research.teacher_recovery.trainer as trainer
 import test_teacher_ablation as original_tests
 
 
@@ -51,8 +52,9 @@ def test_v2_teacher_ema_matches_version1_training_weights(tmp_path):
 
 
 def test_completed_fit_reuses_noncontiguous_router_without_retraining(tmp_path, monkeypatch):
-    from test_crossfit import cohort_files, configs
-    from stprotein2_teacher_ablation_v2.config import TeacherAblationTrainConfig
+    from test_crossfit import cohort_files
+    from test_crossfit import configs
+    from stprotein2.training.config import TeacherAblationTrainConfig
     cohort, _, _ = cohort_files(tmp_path)
     cfg, old = configs()
     train = TeacherAblationTrainConfig(**old.to_dict(), spatial_alpha=.5, teacher_mode='none')

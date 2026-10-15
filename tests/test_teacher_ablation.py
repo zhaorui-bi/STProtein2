@@ -11,11 +11,13 @@ import torch
 
 from stprotein2.data import Cohort
 from stprotein2.graph import FrozenRouter
-from stprotein2_spatial_anchor import targets, trainer as original
-from stprotein2_spatial_anchor.config import SpatialAnchorTrainConfig
-from stprotein2_spatial_anchor.prediction import predict
-from stprotein2_teacher_ablation.config import TeacherAblationTrainConfig
-from stprotein2_teacher_ablation import trainer, nested
+import stprotein2.training.targets as targets
+import stprotein2.research.spatial.trainer as original
+from stprotein2.training.config import SpatialAnchorTrainConfig
+from stprotein2.training.prediction import predict
+from stprotein2.training.config import TeacherAblationTrainConfig
+import stprotein2.research.teacher.trainer as trainer
+import stprotein2.research.teacher.nested as nested
 from test_crossfit import cohort_files, configs
 
 
@@ -61,7 +63,7 @@ def test_mode_validation_and_student_prototypes_retained(tmp_path):
     assert report['teacher_parameters'] == report['total_teacher_forwards'] == 0
     # Supervised updates really reach both retained codebooks.
     cfg, _, refs, _, _, _, baseline = case
-    from stprotein2.trainer import tensor_input
+    from stprotein2.training.basic import tensor_input
     from stprotein2.graph import physical_graph
     sample = refs[0]
     graph = physical_graph(sample.rna.coordinates)

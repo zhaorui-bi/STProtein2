@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 
 from stprotein2.graph import physical_graph, SpatialGraph
-from stprotein2_smoothing.core import apply, permute_graph, select_alpha, spatial_residual
+from stprotein2.models.smoothing import apply, permute_graph, select_alpha, spatial_residual
 
 
 def test_centered_neighbor_residual_preserves_mean_isolation_and_exact_zero_fallback():
@@ -62,9 +62,9 @@ def test_reference_selection_weights_sources_and_slices_not_spot_counts():
 def test_nested_spatial_control_excludes_query_and_held_anchor_sources_and_recovers(tmp_path, monkeypatch):
     import argparse
     from stprotein2.data import Cohort
-    from stprotein2.cli import score_run
-    from stprotein2_anchor.fitting import fit_anchor
-    from stprotein2_smoothing import experiment
+    from stprotein2.research.joint.cli import score_run
+    from stprotein2.training.anchors import fit_anchor
+    import stprotein2.research.smoothing.experiment as experiment
     from test_crossfit import cohort_files
 
     _, registry_all, groups_all = cohort_files(tmp_path)

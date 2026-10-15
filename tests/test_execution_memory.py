@@ -7,10 +7,10 @@ import pytest
 import torch
 from torch.nn import functional as F
 
-from stprotein2.model import STProtein2
-from stprotein2.prototypes import EnsembleLinear, EMATeacher
-from stprotein2_execution import ExecutionPolicy, configure_execution
-from stprotein2_execution.memory import WeightModulatedEnsembleLinear
+from stprotein2.models.residual import STProtein2
+from stprotein2.models.prototypes import EnsembleLinear, EMATeacher
+from stprotein2.execution import ExecutionPolicy, configure_execution
+from stprotein2.execution.memory import WeightModulatedEnsembleLinear
 from test_architecture import setup_model
 
 

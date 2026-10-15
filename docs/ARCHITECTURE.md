@@ -38,15 +38,15 @@ The protein reader applies `log1p` to raw ADT counts and subtracts each spot's m
 | Component | Module |
 |---|---|
 | Data contract and preprocessing | `stprotein2/data.py` |
-| RNA ensemble and prototype memories | `stprotein2/prototypes.py` |
-| State, niche and expert-mixture residuals | `stprotein2/model.py` |
-| Cooperative sheaf propagation | `stprotein2/sheaf.py` |
-| Independently frozen anchor | `stprotein2_anchor/` |
-| Fixed spatial base | `stprotein2_spatial_anchor/` |
-| Hierarchical initialization | `stprotein2_balanced_initialization/` |
-| Current neural training | `stprotein2_balanced_training/` |
-| Current nested cohort runner | `stprotein2_latest_benchmark_v2/` |
+| RNA ensemble and prototype memories | `stprotein2/models/prototypes.py` |
+| State, niche and expert-mixture residuals | `stprotein2/models/residual.py` |
+| Cooperative sheaf propagation | `stprotein2/models/sheaf.py` |
+| Independently frozen anchor | `stprotein2/models/anchor.py` and `stprotein2/training/anchors.py` |
+| Fixed spatial base | `stprotein2/models/spatial.py` |
+| Hierarchical initialization | `stprotein2/training/initialization.py` |
+| Current neural training | `stprotein2/training/` |
+| Current nested cohort runner | `stprotein2/training/nested.py` |
 | Validation switches | `stprotein2/gates.py` |
-| Model export and RNA-only prediction | `stprotein2_deploy/` |
+| Model export and RNA-only prediction | `stprotein2/inference/` |
 
 Structural differences from earlier methods are implemented. Their individual accuracy gains require matched ablations and independent evaluation; this snapshot does not establish SOTA or improvement for every dataset/protein/metric.

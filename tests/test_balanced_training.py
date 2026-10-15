@@ -7,11 +7,12 @@ import numpy as np
 import pytest
 import torch
 
-from stprotein2_execution.memory import CheckpointRepresentations, WeightModulatedEnsembleLinear
-from stprotein2_spatial_anchor.prediction import predict
-from stprotein2_teacher_ablation_v2 import trainer as previous
-from stprotein2_balanced_training import trainer, nested
-from stprotein2_balanced_training.config import BalancedTrainConfig
+from stprotein2.execution.memory import CheckpointRepresentations, WeightModulatedEnsembleLinear
+from stprotein2.training.prediction import predict
+import stprotein2.research.teacher_recovery.trainer as previous
+import stprotein2.training.trainer as trainer
+import stprotein2.research.strict_nested as nested
+from stprotein2.training.config import BalancedTrainConfig
 import test_teacher_ablation as original
 
 

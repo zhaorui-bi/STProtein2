@@ -9,7 +9,7 @@ import numpy as np
 from scipy import sparse
 from sklearn.preprocessing import StandardScaler
 
-from .graph import digest_array
+from stprotein2.graph import digest_array
 
 
 PANEL = tuple(sorted("ACTA2 BCL2 CCR7 CD14 CD163 CD19 CD27 CD274 CD3E CD4 CD40 CD68 CD8A CEACAM8 CR2 CXCR5 EPCAM FCGR3A HLA_DRA ITGAM ITGAX KRT5 MS4A1 PAX5 PCNA PDCD1 PECAM1 PTPRC_1 PTPRC_2 SDC1 VIM".split()))

@@ -32,6 +32,6 @@ jobs:
           OPENBLAS_NUM_THREADS: '2'
         run: |
           python examples/make_demo.py --output demo/data
-          stprotein2-train run --registry demo/data/registry.json --groups demo/data/groups.json --config configs/demo.json --query query --output demo/run --anchor-cache demo/anchors --device cpu
-          stprotein2-predict export --run demo/run --output demo/bundle
-          stprotein2-predict predict --bundle demo/bundle --rna demo/data/query_rna.h5ad --sample query --output demo/prediction --device cpu
+          stprotein2 train --registry demo/data/registry.json --groups demo/data/groups.json --config configs/demo.json --query query --output demo/run --anchor-cache demo/anchors --device cpu
+          stprotein2 export --run demo/run --output demo/bundle
+          stprotein2 predict --bundle demo/bundle --rna demo/data/query_rna.h5ad --sample query --output demo/prediction --device cpu

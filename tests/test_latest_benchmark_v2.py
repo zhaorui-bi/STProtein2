@@ -4,8 +4,8 @@ import pytest
 import torch
 
 import test_latest_benchmark as original
-from stprotein2_latest_benchmark_v2 import nested
-from stprotein2_latest_benchmark_v2 import __main__ as cli
+import stprotein2.training.nested as nested
+import stprotein2.training.__main__ as cli
 
 
 def test_v2_four_source_training_and_CF0_feasibility(tmp_path,monkeypatch):
