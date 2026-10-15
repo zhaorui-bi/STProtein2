@@ -100,6 +100,7 @@ def export_run(run, output):
     protocol = manifest["protocol"]
     historical = dict(manifest["source_sha256"])
     historical.update(protocol.get("extra_source_sha256", {}))
+    historical.update(protocol.get("research_source_sha256", {}))
     for key in ("dependency_source_sha256", "dependency_sources"):
         historical.update(protocol.get(key, {}))
         historical.update(protocol.get("source_shrinkage_protocol", {}).get(key, {}))

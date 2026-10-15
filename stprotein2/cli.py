@@ -12,7 +12,6 @@ def main(argv=None):
         ('train', 'Train and select the current STProtein2 model'),
         ('export', 'Export a completed model into a portable bundle'),
         ('predict', 'Predict proteins from a complete RNA slice'),
-        ('score', 'Score completed predictions using measured ADT'),
     ):
         commands.add_parser(name, help=help_text, add_help=False)
     if not argv or argv[0] in {'-h', '--help'}:
@@ -25,7 +24,4 @@ def main(argv=None):
     if command in {'export', 'predict'}:
         from .inference.__main__ import main as inference
         return inference([command, *arguments])
-    if command == 'score':
-        from .evaluation.score import main as score
-        return score(arguments)
     parser.error(f'unknown command: {command}')

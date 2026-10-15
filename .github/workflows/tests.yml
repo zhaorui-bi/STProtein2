@@ -19,19 +19,18 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
           python -m pip install '.[test]'
+          python -m pip wheel --no-deps --wheel-dir dist .
+          python -m pip install --force-reinstall --no-deps dist/*.whl
       - name: Test
         env:
           CUDA_VISIBLE_DEVICES: ''
           OMP_NUM_THREADS: '2'
           OPENBLAS_NUM_THREADS: '2'
         run: python -m pytest -q
-      - name: Run installed demo
+      - name: Validate installed core wheel outside the checkout
         env:
           CUDA_VISIBLE_DEVICES: ''
           OMP_NUM_THREADS: '2'
           OPENBLAS_NUM_THREADS: '2'
         run: |
-          python examples/make_demo.py --output demo/data
-          stprotein2 train --registry demo/data/registry.json --groups demo/data/groups.json --config configs/demo.json --query query --output demo/run --anchor-cache demo/anchors --device cpu
-          stprotein2 export --run demo/run --output demo/bundle
-          stprotein2 predict --bundle demo/bundle --rna demo/data/query_rna.h5ad --sample query --output demo/prediction --device cpu
+          python scripts/validate_wheel.py --work-dir "$RUNNER_TEMP/stprotein2-wheel-check"

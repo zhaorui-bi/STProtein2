@@ -8,8 +8,8 @@ import pytest
 
 from stprotein2.graph import FrozenRouter
 from stprotein2.serialization import content_identity
-import stprotein2.research.teacher_recovery.nested as nested
-import stprotein2.research.teacher_recovery.trainer as trainer
+import research.teacher_recovery.nested as nested
+import research.teacher_recovery.trainer as trainer
 import test_teacher_ablation as original_tests
 
 

@@ -4,7 +4,7 @@
 
 ![STProtein2 framework](fig/framework.png)
 
-This repository uses one Python package, **`stprotein2`**. The current algorithm is the v2.1 configuration; version `0.2.0.dev0` introduces the unified source layout and command-line interface.
+The installable **`stprotein2`** package contains the core software. Evaluation tools and research experiments live in separate repository directories. The current algorithm configuration is v2.1; the source-layout version is `0.3.0.dev0`.
 
 ## Code structure
 
@@ -14,16 +14,15 @@ STProtein2/
 │   ├── models/                # Frozen anchor, RNA encoder, prototypes and sheaf experts
 │   ├── training/              # Initialization, residual training and nested selection
 │   ├── inference/             # Bundle export, loading and RNA-only prediction
-│   ├── evaluation/            # Prediction metrics, spatial metrics and separate ADT scoring
 │   ├── execution/             # Memory policies and graph partitioning
-│   ├── research/              # Historical controls used by regression tests
-│   ├── resources/             # Packaged protocol records
 │   ├── data.py                # RNA/ADT data contracts and reference-fitted preprocessing
 │   ├── graph.py               # Spatial graphs and frozen routing
 │   ├── gates.py               # Per-protein validation switches
 │   ├── config.py              # Shared model configuration
 │   ├── provenance.py          # Shared source hashes and immutable snapshots
 │   └── cli.py                 # Public command dispatcher
+├── evaluation/                # Offline ADT scoring, spatial and domain metrics
+├── research/                  # Ablations, baselines and historical training controls
 ├── configs/                   # Current full-size and small demo configurations
 ├── examples/                  # Synthetic input generator
 ├── tests/                     # Unit, training and deployment regression tests
@@ -53,7 +52,7 @@ cd STProtein2
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-python -m pip install -e '.[test]'
+python -m pip install -e .
 ```
 
 Full-graph execution needs no PyTorch Geometric, METIS or Leiden. Optional partition controls use `python -m pip install -e '.[test,partition]'`.
@@ -102,16 +101,21 @@ stprotein2 predict \
 Prediction needs the bundle and one complete RNA slice. Outputs include named `prediction.h5ad`, numerical prediction components, gene-coverage diagnostics and integrity manifests. If query ADT is available, score completed predictions separately:
 
 ```bash
-stprotein2 score --registry /path/registry.json --output runs/query
+python -m evaluation --registry /path/registry.json --output runs/query
 ```
+
+Evaluation commands run from the repository root after installing the core package. See the [evaluation guide](evaluation/README.md) for metrics and inputs, and the [research guide](research/README.md) for experimental controls. Neither directory is included in the core wheel.
 
 ## Validation and provenance
 
 ```bash
+python -m pip install -e '.[test]'
 python -m pytest -q
 ```
 
-The [layout validation record](docs/LAYOUT_VALIDATION.md) reports the checks for this reorganization. Source-integrity checks use the same unified package paths in editable and wheel installations. Historical development protocols and first-upload evidence are retained in [`docs/history/`](docs/history/).
+The [layout validation record](docs/LAYOUT_VALIDATION.md) reports the checks for this reorganization. Source-integrity checks use the same unified package paths in editable and wheel installations. Historical development protocols and earlier validation evidence are retained in [`docs/history/`](docs/history/). See [CONTRIBUTING.md](CONTRIBUTING.md) for development, testing and packaging.
+
+Layout changes alter source identities. Use fresh cache and output directories with 0.3; retain the matching environment for older runs and bundles. See [the change log](CHANGELOG.md) for migration details.
 
 ## References and license
 

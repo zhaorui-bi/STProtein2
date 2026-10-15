@@ -8,8 +8,8 @@ from scipy import sparse
 
 from stprotein2.data import PANEL
 from stprotein2.gates import select_gates
-from stprotein2.research.joint.nested import run_nested
-from stprotein2.research.joint.cli import score_run
+from research.joint.nested import run_nested
+from research.joint.cli import score_run
 
 
 def test_gate_requires_replication_and_rejects_majority_harm():

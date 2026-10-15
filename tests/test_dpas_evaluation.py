@@ -2,7 +2,7 @@
 import numpy as np
 import pytest
 from stprotein2.graph import SpatialGraph
-from stprotein2.evaluation.spatial import compare, spatial_statistics, extended_metrics
+from evaluation.spatial import compare, spatial_statistics, extended_metrics
 
 
 def test_spatial_matches_dense_formula_and_affine_invariance():

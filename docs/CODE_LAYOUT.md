@@ -1,58 +1,50 @@
 # Code organization
 
-All distributed Python source belongs to `stprotein2`. The supported pipeline is:
+The repository has three explicit boundaries. Only the core package is installed into the wheel.
+
+| Location | Responsibility | Distribution |
+|---|---|---|
+| `stprotein2/` | Reusable model, preprocessing, reference-only training, export and RNA-only inference | Core wheel and source archive |
+| `evaluation/` | Measured-ADT scoring and comparative metrics | Source archive / checkout |
+| `research/` | Baselines, ablations and historical experimental runners | Source archive / checkout |
+| `docs/history/` | Dated protocols and earlier validation evidence | Source archive / checkout |
+
+Dependencies point from evaluation/research to core. Core software does not import repository evaluation or research tools.
+
+## Core pipeline
 
 ```text
-cli.py
+stprotein2/cli.py
   → training/nested.py
       → training/anchors.py + data.py
       → training/initialization.py
       → training/trainer.py → models/spatial.py
       → gates.py
   → inference/bundle.py
-  → evaluation/score.py
+
+evaluation/__main__.py → evaluation/score.py → completed predictions + measured ADT
+research/             → core components and separate experimental protocols
 ```
 
-## Models
-
-| File | Responsibility |
+| Core file/directory | Responsibility |
 |---|---|
-| `models/spatial.py` | Complete frozen-spatial-anchor STProtein2 model |
-| `models/anchor.py` | Frozen Ridge layer and independently anchored residual model |
-| `models/residual.py` | State/local residual heads and protein-conditioned expert mixture |
-| `models/prototypes.py` | RNA ensemble and state/niche prototype memories |
-| `models/sheaf.py` | Cooperative sheaf propagation and graph-versus-self correction |
-| `models/smoothing.py` | Centered spatial basis and classical spatial-control operators |
+| `models/spatial.py` | Complete frozen-spatial-anchor model exposed as `STProtein2` |
+| `models/anchor.py`, `models/residual.py` | Frozen Ridge layer, state/local heads and protein-conditioned expert mixture |
+| `models/prototypes.py`, `models/sheaf.py` | RNA ensemble, prototype memories and cooperative sheaf propagation |
+| `models/smoothing.py` | Mean-preserving spatial basis shared by training/inference |
+| `training/nested.py`, `training/trainer.py` | Current grouped pipeline and balanced residual trainer |
+| `training/initialization.py` | Reference-only hierarchical routing and memory initialization |
+| `training/anchors.py`, `training/residual_targets.py`, `training/targets.py` | Independent anchor selection/caching and residual offsets |
+| `training/config.py`, `training/basic.py`, `training/prediction.py` | Training configuration, shared helpers and prediction |
+| `inference/` | Completed-run export, bundle loading and whole-slice RNA-only prediction |
+| `execution/` | Runtime dispatch, exact-dependency partitions and refinement |
+| `data.py`, `graph.py`, `gates.py` | Data contracts, spatial graphs, frozen routing and reference-selected switches |
+| `io.py`, `paths.py`, `serialization.py`, `provenance.py` | Artifact handling, installation roots, content identities and core source snapshots |
 
-The public `from stprotein2 import STProtein2, ModelConfig` exposes the complete spatial model and its model configuration. Fitted inference uses `stprotein2 predict` or `stprotein2.predict_file`.
+Training configuration inheritance and inference loaders retain reusable support for model families exercised by the research controls. Their experimental fitting/selection orchestration stays in `research/`.
 
-## Training
+## Provenance
 
-`training/nested.py` implements the current cohort pipeline, including fold-specific refits and reference-only selection. `trainer.py` trains the current model. `initialization.py` initializes routing and memories. `anchors.py`, `residual_targets.py` and `targets.py` construct the independent anchor and training offsets. `config.py` contains the training configuration hierarchy in one location. `prediction.py` runs the complete spatial model; `basic.py` supplies shared tensor, augmentation and initialization helpers.
+Core source hashes cover only `stprotein2/**/*.py` and match between a checkout and its built wheel. Repository edits to metrics, experiments or documentation do not change core cache/bundle identities. Research manifests additionally bind research/evaluation code and dated protocols; scoring records evaluation sources separately. Exported bundles snapshot only the runtime core.
 
-## Deployment, evaluation and execution
-
-`inference/bundle.py` handles completed-run export, checkpoint loading and RNA-only application. `evaluation/metrics.py` contains core error/correlation metrics; `evaluation/spatial.py` adds spatial and domain metrics. `evaluation/score.py` is the separate measured-ADT scoring interface. `execution/` holds runtime dispatch, exact-dependency partitions and refinement.
-
-`io.py`, `paths.py`, `serialization.py` and `provenance.py` provide shared artifact handling, installation roots, content identities and source snapshots. Training and deployment use these common helpers rather than importing benchmark orchestration.
-
-## Historical controls
-
-`research/` retains the joint, anchor-only, residual-target, teacher and earlier cohort controls used by regression tests. The supported model/training/inference/evaluation code does not import `research`. External competitor adapters from the original multi-project workspace have been removed from this distribution; they were not standalone entry points.
-
-The former top-level packages were consolidated as follows:
-
-| Earlier directory | Current location |
-|---|---|
-| `stprotein2_anchor` | `models/anchor.py`, `training/anchors.py` |
-| `stprotein2_spatial_anchor` | `models/spatial.py`, `training/targets.py`, `training/prediction.py` |
-| `stprotein2_balanced_training` | `training/trainer.py`, `training/config.py` |
-| `stprotein2_balanced_initialization` | `training/initialization.py` |
-| `stprotein2_latest_benchmark_v2` | `training/nested.py`, `training/__main__.py` |
-| `stprotein2_deploy` | `inference/` |
-| `stprotein2_dpas_evaluation` | `evaluation/spatial.py` |
-| `stprotein2_execution`, `stprotein2_partition`, `stprotein2_partition_cost` | `execution/` |
-| Historical teacher/cohort training variants | `research/` |
-| `stprotein2_resources` | `resources/` |
-
-The source-layout version is `0.2.0.dev0`; the algorithm configuration remains v2.1. Earlier 0.1 exports record their original module paths and source hashes, and should be read with their matching 0.1 environment. New training and export use the unified layout; integrity checks are not bypassed to load an incompatible bundle.
+The source-layout version is `0.3.0.dev0`; the algorithm configuration remains v2.1. Existing 0.1/0.2 artifacts remain tied to their matching source hashes/environments. New training and export require fresh output/cache locations. See [CHANGELOG.md](../CHANGELOG.md) for interface migration and [the validation record](LAYOUT_VALIDATION.md) for current checks.

@@ -11,10 +11,10 @@ from torch.nn import functional as F
 from stprotein2.config import from_dict
 from stprotein2.data import Cohort, PANEL
 from stprotein2.graph import FrozenRouter, physical_graph
-from stprotein2.research.joint.cli import score_run
+from research.joint.cli import score_run
 from stprotein2.training.basic import tensor_input
 from stprotein2.models.anchor import AnchoredSTProtein2
-import stprotein2.research.residuals.trainer as old_trainer
+import research.residuals.trainer as old_trainer
 import stprotein2.training.residual_targets as old_targets
 from stprotein2.models.smoothing import spatial_residual, apply
 from stprotein2.execution import Budget
@@ -23,8 +23,8 @@ from stprotein2.models.spatial import SpatialAnchoredSTProtein2, spatial_basis
 from stprotein2.training.prediction import predict
 from stprotein2.execution.partition import plan_for_model
 import stprotein2.training.targets as targets
-import stprotein2.research.spatial.trainer as trainer
-import stprotein2.research.spatial.nested as nested
+import research.spatial.trainer as trainer
+import research.spatial.nested as nested
 from test_crossfit import cohort_files, configs
 
 

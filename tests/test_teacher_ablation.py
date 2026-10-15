@@ -12,12 +12,12 @@ import torch
 from stprotein2.data import Cohort
 from stprotein2.graph import FrozenRouter
 import stprotein2.training.targets as targets
-import stprotein2.research.spatial.trainer as original
+import research.spatial.trainer as original
 from stprotein2.training.config import SpatialAnchorTrainConfig
 from stprotein2.training.prediction import predict
 from stprotein2.training.config import TeacherAblationTrainConfig
-import stprotein2.research.teacher.trainer as trainer
-import stprotein2.research.teacher.nested as nested
+import research.teacher.trainer as trainer
+import research.teacher.nested as nested
 from test_crossfit import cohort_files, configs
 
 

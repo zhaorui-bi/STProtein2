@@ -1,11 +1,42 @@
 {
-  "source_layout_version": "0.2.0.dev0",
+  "source_layout_version": "0.3.0.dev0",
   "algorithm_configuration": "v2.1",
   "selected_regression": {
-    "passed": 31,
+    "passed": 33,
     "skipped": 1,
     "warnings": 1,
-    "seconds": 30.77
+    "seconds": 246.82
+  },
+  "full_regression": {
+    "passed": 100,
+    "skipped": 7,
+    "warnings": 1,
+    "seconds": 212.83,
+    "command": "python -m pytest -q",
+    "location": "local filesystem copy; complete core/research/evaluation Python AST equality verified after trailing-whitespace cleanup"
+  },
+  "additional_research_export_regression": {
+    "passed": 1,
+    "seconds": 7.36,
+    "command": "python -m pytest -q tests/test_deploy.py::test_research_export_checks_experiment_sources_but_bundle_needs_only_core"
+  },
+  "total_unique_passing_tests": 101,
+  "structure": {
+    "current_core_operator_trainer_ast_equal": [
+      "models/residual.py",
+      "models/spatial.py",
+      "models/anchor.py",
+      "models/prototypes.py",
+      "models/sheaf.py",
+      "training/trainer.py"
+    ],
+    "historical_functions_preserved": [
+      "fit",
+      "select_alpha",
+      "permute_graph"
+    ],
+    "wheel_only_core_namespace": true,
+    "source_archive_contains_evaluation_research_docs": true
   },
   "numerical_parity": {
     "nonzero_component_exact_parity": true,
@@ -20,25 +51,27 @@
     ],
     "gradient_tensors": 72
   },
-  "operator_ast_check": {
-    "operators_and_trainer_ast_equal_excluding_imports": true,
-    "checked": [
-      "stprotein2/model.py",
-      "stprotein2/prototypes.py",
-      "stprotein2/sheaf.py",
-      "stprotein2_anchor/model.py",
-      "stprotein2_spatial_anchor/model.py",
-      "stprotein2_balanced_training/trainer.py"
+  "actual_training_before_after": {
+    "before_0_2_after_0_3_actual_training_exact_parity": true,
+    "checkpoint_tensors": 72,
+    "prediction_components": [
+      "prediction",
+      "base",
+      "state_delta",
+      "local_delta",
+      "rna_base",
+      "spatial_basis_delta"
     ]
   },
   "installed_wheel": {
-    "installed_wheel_imports": true,
-    "repo_and_wheel_source_manifests_equal": true,
-    "public_api_and_commands": true,
+    "outside_checkout": true,
+    "repository_tool_imports_blocked": true,
+    "core_only_wheel": true,
+    "repository_and_wheel_source_manifests_equal": true,
+    "core_source_files": 38,
     "actual_nested_training": true,
     "query_adt_absent": true,
-    "export_prediction_and_component_exact_parity": true,
-    "restored_current_configuration": true,
+    "export_prediction_component_exact_parity": true,
     "shape": [
       16,
       31
@@ -53,25 +86,5 @@
       "joblib": "1.6.0"
     }
   },
-  "full_regression": {
-    "passed": 98,
-    "skipped": 7,
-    "warnings": 1,
-    "seconds": 991.67,
-    "command": "python -m pytest -q",
-    "device": "CPU; CUDA hidden"
-  },
-  "wheel_sha256": "06cd483c79f9e67d83a0a072bc44bfa6f093d8480bd667b202a6246f27d0bfc0",
-  "actual_training_before_after": {
-    "old_0_1_and_new_0_2_actual_training_exact_parity": true,
-    "prediction_components": [
-      "prediction",
-      "base",
-      "state_delta",
-      "local_delta",
-      "rna_base",
-      "spatial_basis_delta"
-    ],
-    "checkpoint_tensors": 72
-  }
+  "remote_ci": "Separate from the local validation record; see repository Actions."
 }

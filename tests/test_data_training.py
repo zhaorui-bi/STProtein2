@@ -10,7 +10,8 @@ from stprotein2.config import ModelConfig, TrainConfig
 from stprotein2.data import RNAView, ReferenceTransform, TrainingSlice, PANEL, count_thinning_views
 from stprotein2.graph import FrozenRouter
 from stprotein2.io import freeze_run
-from stprotein2.training.basic import fit, predict
+from research.joint.trainer import fit
+from stprotein2.training.basic import predict
 
 
 def raw_sample(seed, n=18, genes=12):

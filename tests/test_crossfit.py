@@ -14,14 +14,14 @@ from torch.nn import functional as F
 from stprotein2.config import ModelConfig
 from stprotein2.data import Cohort, PANEL
 from stprotein2.graph import FrozenRouter, physical_graph
-from stprotein2.research.joint.cli import score_run
+from research.joint.cli import score_run
 from stprotein2.training.basic import predict, tensor_input
 from stprotein2.models.anchor import AnchoredSTProtein2
-import stprotein2.research.anchor.trainer as frozen_trainer
+import research.anchor.trainer as frozen_trainer
 from stprotein2.training.config import ResidualTrainConfig
-import stprotein2.research.residuals.nested as nested
+import research.residuals.nested as nested
 import stprotein2.training.residual_targets as targets
-import stprotein2.research.residuals.trainer as trainer
+import research.residuals.trainer as trainer
 
 
 def cohort_files(path):

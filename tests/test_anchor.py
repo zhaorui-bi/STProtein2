@@ -12,10 +12,10 @@ import torch
 from stprotein2.config import ModelConfig
 from stprotein2.data import Cohort, PANEL
 from stprotein2.graph import physical_graph
-from stprotein2.research.joint.cli import score_run
+from research.joint.cli import score_run
 from stprotein2.training.anchors import fit_anchor, load_frozen_anchor
 from stprotein2.models.anchor import AnchoredSTProtein2
-from stprotein2.research.anchor.nested import load_model, run_nested
+from research.anchor.nested import load_model, run_nested
 
 
 def tiny_cohort(tmp_path, extra_group=False):

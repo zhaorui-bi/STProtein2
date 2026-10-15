@@ -17,7 +17,7 @@ from stprotein2.io import freeze_run, save_torch, sha256, write_json
 from stprotein2.models.residual import STProtein2
 from stprotein2.training.basic import predict
 from stprotein2.models.anchor import AnchoredSTProtein2
-from stprotein2.research.smoothing.experiment import predict as smooth_predict
+from research.smoothing.experiment import predict as smooth_predict
 from stprotein2.models.spatial import SpatialAnchoredSTProtein2
 from stprotein2.training.prediction import predict as spatial_predict
 from stprotein2.training.config import SpatialAnchorTrainConfig
@@ -135,6 +135,41 @@ def test_export_portable_RNA_only_prediction_matches_every_model_family(tmp_path
         predict_file(bundle, rna, tmp_path / 'partitioned', sample='s6', execution='adaptive')
         with np.load(tmp_path / 'partitioned/prediction.npz') as saved:
             np.testing.assert_allclose(saved['prediction'], expected['prediction'], atol=1e-5, rtol=1e-5)
+
+
+def test_research_export_checks_experiment_sources_but_bundle_needs_only_core(tmp_path, monkeypatch):
+    from research.provenance import sources as research_sources
+    from stprotein2.inference import bundle as deployment
+    from stprotein2.paths import PACKAGE_ROOT
+
+    run, _, _ = completed_run(tmp_path, 'balanced_spatial')
+    manifest = json.loads((run / 'manifest.json').read_text())
+    experiment = research_sources()
+    manifest['protocol']['research_source_sha256'] = experiment
+
+    def seal():
+        write_json(run / 'manifest.json', manifest)
+        marker = json.loads((run / 'prediction_complete.json').read_text())
+        marker['deployment_artifacts']['manifest.json'] = sha256(run / 'manifest.json')
+        write_json(run / 'prediction_complete.json', marker)
+
+    recorded = experiment['research/joint/trainer.py']
+    experiment['research/joint/trainer.py'] = 'changed'
+    seal()
+    with pytest.raises(RuntimeError, match='implementation differs'):
+        export_run(run, tmp_path / 'bad_bundle')
+    experiment['research/joint/trainer.py'] = recorded
+    seal()
+    metadata = export_run(run, tmp_path / 'bundle')
+    assert all(name.startswith('stprotein2/') for name in metadata['source_sha256'])
+    assert not (tmp_path / 'bundle/source_snapshot/research').exists()
+    assert not (tmp_path / 'bundle/source_snapshot/evaluation').exists()
+    # Simulate the installation root of a wheel with no repository tools.
+    runtime = tmp_path / 'runtime'
+    shutil.copytree(PACKAGE_ROOT, runtime / 'stprotein2', ignore=shutil.ignore_patterns('__pycache__'))
+    monkeypatch.setattr(deployment, 'ROOT', runtime)
+    loaded, _, model, _ = load_bundle(tmp_path / 'bundle')
+    assert loaded == metadata and model is not None
 
 
 def test_bundle_corruption_incomplete_export_and_incompatible_resume_rejected(tmp_path):

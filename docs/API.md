@@ -8,9 +8,12 @@
 | `stprotein2 train` | Fit the current model, select gates and predict the held query group |
 | `stprotein2 export` | Export a completed run into a self-contained bundle |
 | `stprotein2 predict` | Predict one complete RNA slice using a bundle |
-| `stprotein2 score` | Score frozen query predictions using measured ADT |
 
 `python -m stprotein2` accepts the same commands. `stprotein2-train run` and `stprotein2-predict export|predict` remain console aliases.
+
+## Repository evaluation
+
+From a source checkout, `python -m evaluation --registry registry.json --output runs/query` scores a completed training run using measured query ADT. Evaluation is a separate repository tool and is excluded from the core wheel. See [evaluation/README.md](../evaluation/README.md) for the input contract and extended metrics.
 
 ## Python
 

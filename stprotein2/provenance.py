@@ -1,4 +1,4 @@
-"""One source-identity and snapshot implementation for the unified package."""
+"""One source-identity and snapshot implementation for the core software package."""
 from pathlib import Path
 
 from .io import sha256
@@ -7,7 +7,6 @@ from .paths import PACKAGE_ROOT, SOURCE_ROOT
 
 def sources():
     files = list(PACKAGE_ROOT.rglob('*.py'))
-    files += list((PACKAGE_ROOT / 'resources').rglob('*.md'))
     return {str(p.relative_to(SOURCE_ROOT)): sha256(p) for p in sorted(files)}
 
 

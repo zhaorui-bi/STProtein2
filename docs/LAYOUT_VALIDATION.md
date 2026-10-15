@@ -1,45 +1,47 @@
-# Unified-package validation
+# Core-package boundary validation
 
-The source-layout release is `0.2.0.dev0`; the algorithm configuration remains v2.1. All supported Python source now uses the `stprotein2` namespace.
+The source-layout version is `0.3.0.dev0`; the algorithm configuration remains v2.1. Evaluation and research code live outside `stprotein2/` and are excluded from the core wheel.
 
-## Completed checks
+## Completed local checks
 
 | Check | Result |
 |---|---|
-| Namespace, public commands and source-manifest coverage | Passed |
-| Selected deployment/model/data/gate/spatial regression | **31 passed, 1 CUDA case skipped** |
-| Complete local regression suite | **98 passed, 7 skipped**, one intentional duplicate-barcode warning; 991.67 seconds |
-| Original versus relocated numerical operator/trainer ASTs | Identical after excluding imports for the six checked source files |
-| Fixed nonzero-residual prediction comparison | Exact equality for prediction, spatial base, RNA base and all three correction components |
-| Fixed-input parameter-gradient comparison | Exact equality for 72 gradient tensors |
-| Original versus reorganized complete synthetic training | Exact equality for 72 checkpoint tensors and all six compared prediction components |
-| Wheel namespace inventory | Only `stprotein2`; no former sibling packages |
-| Repository versus installed-wheel source manifests | Exact equality |
-| Public commands from outside the source checkout | Passed |
-| Actual installed-wheel nested training, export and prediction | Passed |
-| Query ADT absent during the installed example | Verified |
-| Original run versus exported model prediction/components | Exact equality; 16 × 31 finite predictions |
+| Focused boundary, deployment, architecture, data, gate and metric regression | 33 passed, 1 skipped; 246.82 seconds |
+| Complete regression suite on a local copy of the current runtime sources | 100 passed, 7 skipped; 212.83 seconds |
+| Additional research-export isolation regression | 1 passed; 7.36 seconds |
+| Core dependency boundary | No imports of repository evaluation/research tools |
+| Built wheel | Only `stprotein2`; 38 Python source files, no evaluation/research/protocol resources |
+| Source archive | Includes evaluation, research, protocols, configs, examples and development tools |
+| Repository versus installed-wheel core source identity | Exact equality |
+| Core public API and command imports with repository tool imports blocked | Passed |
+| Actual wheel training, export and RNA-only prediction outside the checkout | Passed; 16 × 31 finite predictions |
+| Trained run versus exported model | All six compared prediction components exactly equal |
+| Previous versus current complete synthetic training | All 72 checkpoint tensors and six compared prediction components exactly equal |
+| Fixed-input nonzero-residual model parity | Six prediction components and 72 parameter gradients exactly equal |
+| Core model/operator/trainer AST comparison with 0.2 | Six checked files unchanged after excluding imports |
+| Historical joint fit, coefficient search and graph permutation functions | Function ASTs unchanged after relocation |
+| Research identity and portable bundle boundary | Altered research code rejected at export; exported model loads with core sources only |
 
-The selected regression command was:
+The complete suite and additional regression cover **101 passing tests in total**, with seven optional-runtime skips. The single AnnData warning is intentionally triggered by an invalid duplicate-barcode input. CUDA and optional native partition runtimes were unavailable for these checks.
+
+The complete suite used `python -m pytest -q` on a local filesystem copy to avoid shared-filesystem overhead. Its core, research and evaluation implementations match the checkout (complete Python AST equality verified; a trailing blank line was removed during final diff cleanup). The additional research-export test was added afterward and run separately:
 
 ```bash
-python -m pytest -q tests/test_package_layout.py tests/test_deploy.py \
-  tests/test_architecture.py tests/test_data_training.py \
-  tests/test_nested_gates.py tests/test_dpas_evaluation.py
+python -m pytest -q tests/test_deploy.py::test_research_export_checks_experiment_sources_but_bundle_needs_only_core
 ```
 
-It completed in 30.77 seconds in the CPU validation environment. The single AnnData warning is produced intentionally by the invalid duplicate-barcode input test. Numerical parity uses a representative fixed-input case with nonzero corrections; it is not an accuracy benchmark or a universal numerical proof.
+The distribution check is reproducible after installing a built wheel:
 
-An additional comparison against the first release's independently completed synthetic training run found exactly equal model checkpoint tensors and prediction components.
+```bash
+python scripts/validate_wheel.py --work-dir /tmp/stprotein2-wheel-check
+```
 
-The installed-wheel example performed three reference-held-out inner fits and a final refit with the reduced demo configuration. Three reference groups keep the validation switches closed. Deployment regression separately checks selected nonzero corrections, deleted training/ADT files, full/adaptive agreement, missing genes and corrupted artifacts.
-
-The complete local regression suite, including historical-control training, nested selection, serialization and recovery checks, completed with 98 passed and 7 skipped in 991.67 seconds. Skips concern CUDA and optional native partition runtimes. The same suite is configured in GitHub Actions; its remote run is a separate result.
+Use a fresh destination. The script runs outside the source checkout, verifies the installed source identity and dependency boundary, then performs real nested demo training, export and inference with query ADT absent. The demo uses three reference groups, which keep selection switches closed. Separate deployment and numerical parity checks exercise nonzero selected corrections. These engineering checks do not establish comparative prediction accuracy.
 
 ## Integrity and compatibility
 
-Imports, package paths, configuration locations and source snapshots were updated together. The current training/deployment modules do not import historical controls from `research/`. Model tensor names and computation are preserved. The package uses canonical installation-relative source paths in editable and wheel installations, with checksum checks retained for caches, runs and exported bundles.
+Core artifacts bind only core source hashes. Research manifests separately bind experiment/evaluation code and dated protocols; scoring manifests bind evaluation code. Research dependencies are verified when exporting those runs, while a deployed bundle contains only core runtime sources.
 
-Earlier 0.1 bundles remain tied to their original environment/source hashes. New training and export should use a fresh output/cache location for this layout release.
+Use fresh cache/output directories for this version. Existing 0.1/0.2 artifacts remain tied to their matching environments and source hashes; integrity checks have not been bypassed. Previous 0.2 validation evidence is retained in [history/layout_0_2/](history/layout_0_2/), and initial extraction evidence remains in [history/initial_release/](history/initial_release/).
 
-Machine-readable checks are in [layout_validation.json](layout_validation.json), and file relocation records are in [module_migration.json](module_migration.json). The initial release's validation evidence is preserved under `history/initial_release/`.
+The machine-readable record is [layout_validation.json](layout_validation.json). GitHub Actions repeats the complete suite and tests an installed wheel outside the checkout; remote CI status is separate from these local results.
