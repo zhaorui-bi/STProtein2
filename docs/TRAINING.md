@@ -1,6 +1,6 @@
 # Compact reference training
 
-The optional trainer fits the ordinary own-RNA or neighborhood residual above the independent B0. It implements the C0 setting retained for the current confirmation: no count/mask augmentation, no Teacher or prototypes, no learned graph operator, and reference-only nested epoch and gate selection. B0 remains the default model while the three-seed architecture decision is pending.
+The optional trainer fits the ordinary own-RNA or neighborhood residual above the independent B0. It implements the confirmed C0 setting: no count/mask augmentation, no Teacher or prototypes, no learned graph operator, and reference-only nested epoch and gate selection. The completed three-seed comparison retained B0 as the compact development default; `own_mlp` remains the lowest-mean comparison. See [the frozen decision](COMPACT_BASE_20261026.md).
 
 ```bash
 python -m pip install -e '.[neural]'

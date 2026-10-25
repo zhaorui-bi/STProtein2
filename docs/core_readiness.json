@@ -1,7 +1,7 @@
 {
   "schema": "stprotein2_clean_foundation_candidate_v1",
-  "status": "compact_refinement_in_progress",
-  "updated_unix": 1792924521.774486,
+  "status": "development_base_frozen",
+  "updated_unix": 1792934088.0125875,
   "core_evidence_passed": true,
   "final_predictive_architecture_frozen": false,
   "accuracy_improvement_claimed": false,
@@ -16,7 +16,18 @@
   "compact_confirmation": "/fs04/scratch2/nd32/zhaorui/STProtein/STProtein2/runs/stprotein2_compact_confirmation_20261025_v1",
   "current_portable_neural_export_and_inference_validated": true,
   "current_deployment_validation_sha256": "d1a31ff2f2589bde6a5661d4c244e6eb810f75fae7d9a05ff74c592de82625a6",
-  "current_training_validation_scope": "CPU parity, 62 complete synthetic nested fits and real RNA-only deployment",
-  "current_CUDA_training_parity_validated": false,
-  "current_training_validation_sha256": "421847fa781af49d05cb90b748db3b5c7fc2c79580c62c59bc41a197a088f91c"
+  "current_training_validation_scope": "CPU complete nested compatibility plus controlled deterministic CUDA synthetic fits and real RNA-only deployment",
+  "current_CUDA_training_parity_validated": true,
+  "current_training_validation_sha256": "421847fa781af49d05cb90b748db3b5c7fc2c79580c62c59bc41a197a088f91c",
+  "compact_base_frozen": true,
+  "compact_default": "B0",
+  "strict_lowest_development_mean": "own_mlp",
+  "compact_base_freeze_sha256": "fe6422cb5ab1436908b208a9253766ff1b20c4a26518248114640807eff1c4fa",
+  "compact_base_release": "/fs04/scratch2/nd32/zhaorui/STProtein2-clean/runs/compact_base_release_20261026_v1",
+  "compact_base_release_complete_sha256": "a4b2ec46d8a62987d4e1c67a017eed2d43033ce2dbcabbff5bdb9f94c908df6c",
+  "final_architecture_including_novelty_frozen": false,
+  "current_CUDA_training_validation_sha256": "0a0a6e4ee49e51deb899014c3b21cd9d24d9c42cad55eb4a9c7877615221aba2",
+  "formal_benchmark_complete": false,
+  "external_confirmation_complete": false,
+  "novelty_implemented": false
 }

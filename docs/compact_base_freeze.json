@@ -1,0 +1,215 @@
+{
+  "schema": "stprotein2_compact_base_freeze_v1",
+  "status": "frozen_development_base",
+  "observed_unix": 1792933922.114572,
+  "package_version": "0.4.0.dev2",
+  "package_source_sha256": {
+    "stprotein2/__init__.py": "5b145269b306bb1258f8cea8d09297ea882b90d83adb92d79198823c6264ddcb",
+    "stprotein2/__main__.py": "6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279",
+    "stprotein2/anchor.py": "b6a8d1bf16fa980bbd2fa0cf9e906d040918fafef708a0d892e1907c6b7b160a",
+    "stprotein2/cli.py": "ed8dbeaa270c814d4c3883f863b96b861a73af523f642000d484a03fcce714ac",
+    "stprotein2/data.py": "0ba8311e1fd45a5dc12d3af43493c2cc7d4298c7992f9eced78da81ad3d85355",
+    "stprotein2/deployment.py": "34dce59920f795637a046a6dd1ae106f4f9ed603951c69ec0e967cddb7409278",
+    "stprotein2/gates.py": "738f74dbaf54f7b1ee4549483bad2e6781cb40a8ea9c953eeaa05378af7194e5",
+    "stprotein2/graph.py": "0f8b94ff4e926ddf6c7324ff81e2d4dabff2c2b6d1a365e357ed73607b7506be",
+    "stprotein2/io.py": "6e0ca383d36328620b7d8cf29139fd09e635d0d53829ded3e5bc79c3dd4b71fe",
+    "stprotein2/neural.py": "fcb66aa40d2de895e5ce2aa40e0408b640d00f465d8a5bbf07dcdb81971ed4a1",
+    "stprotein2/paths.py": "55f44edc4545a7e06103dc0fd872f89895940e92f36f5a60a93911c51ec9ebc5",
+    "stprotein2/pipeline.py": "30f230cdf5926aaccc9500b92a69ad8cc5d19a62f3041f13bdce38722c7f9b79",
+    "stprotein2/portable.py": "1ff94efc37af6627cb3b9540fecdc198524bffab511c9e847ad71e79f05e1885",
+    "stprotein2/provenance.py": "0867982a0e9e4a7a612ca5abe8352132c45c2aa6ec07e835374a4b16bf21cb81",
+    "stprotein2/selection.py": "3f8674839230a2f91fdf29c148ea7cbd9fec92c574736eedc6eab4db83d571dd",
+    "stprotein2/smoothing.py": "35b1dca390def381b4ab4d049750b4dcf3fe5b4a39e5430e1aca584d919dc394",
+    "stprotein2/training.py": "a7277ded922995effdcad0ac2f387e7f6672cbfc43e39fe34c552ae64fb83a0f"
+  },
+  "selection": {
+    "strict_lowest_mean": "own_mlp",
+    "compact_default": "B0",
+    "lowest_mean_optimizer_SE": 0.0016452380265875358,
+    "compact_cutoff_RMSE": 0.794792267468185,
+    "eligible_in_complexity_order": [
+      "B0",
+      "own_mlp",
+      "neighbor_mlp"
+    ],
+    "donor_confidence_interval": false
+  },
+  "summaries": {
+    "own_mlp": {
+      "complete": true,
+      "source_macro_RMSE": 0.7931470294415974,
+      "per_seed": [
+        {
+          "seed": 2025,
+          "source_macro_RMSE": 0.7904719972748017,
+          "per_source": {
+            "10x_addon_source": 0.4823013405424349,
+            "10x_breast_source": 0.7173582903988809,
+            "10x_glioblastoma_source": 0.9535247987410206,
+            "10x_tonsil_source": 0.5107353433983695,
+            "GSE263617_unresolved_donors": 0.999433484683889,
+            "GSE300851_mesothelioma_unresolved_donors": 1.079478725884215
+          }
+        },
+        {
+          "seed": 2026,
+          "source_macro_RMSE": 0.7928251550729483,
+          "per_source": {
+            "10x_addon_source": 0.48326339550780795,
+            "10x_breast_source": 0.7202191612461343,
+            "10x_glioblastoma_source": 0.9491753370098321,
+            "10x_tonsil_source": 0.5109240266198786,
+            "GSE263617_unresolved_donors": 1.0219879725477528,
+            "GSE300851_mesothelioma_unresolved_donors": 1.071381037506283
+          }
+        },
+        {
+          "seed": 2027,
+          "source_macro_RMSE": 0.7961439359770424,
+          "per_source": {
+            "10x_addon_source": 0.48412492722395345,
+            "10x_breast_source": 0.7221007659928488,
+            "10x_glioblastoma_source": 0.9528653706045849,
+            "10x_tonsil_source": 0.5101855227653008,
+            "GSE263617_unresolved_donors": 1.0122006093310427,
+            "GSE300851_mesothelioma_unresolved_donors": 1.0953864199445236
+          }
+        }
+      ],
+      "per_source": {
+        "10x_addon_source": 0.4832298877580654,
+        "10x_breast_source": 0.7198927392126214,
+        "10x_glioblastoma_source": 0.9518551687851459,
+        "10x_tonsil_source": 0.5106149642611829,
+        "GSE263617_unresolved_donors": 1.011207355520895,
+        "GSE300851_mesothelioma_unresolved_donors": 1.082082061111674
+      }
+    },
+    "neighbor_mlp": {
+      "complete": true,
+      "source_macro_RMSE": 0.794450079654977,
+      "per_seed": [
+        {
+          "seed": 2025,
+          "source_macro_RMSE": 0.7944403686226439,
+          "per_source": {
+            "10x_addon_source": 0.484141147888211,
+            "10x_breast_source": 0.7256981411847748,
+            "10x_glioblastoma_source": 0.9487091992642239,
+            "10x_tonsil_source": 0.5101918798083286,
+            "GSE263617_unresolved_donors": 1.00952562898953,
+            "GSE300851_mesothelioma_unresolved_donors": 1.0883762146007954
+          }
+        },
+        {
+          "seed": 2026,
+          "source_macro_RMSE": 0.7945094054509255,
+          "per_source": {
+            "10x_addon_source": 0.484141147888211,
+            "10x_breast_source": 0.7263564905801823,
+            "10x_glioblastoma_source": 0.9487682213382878,
+            "10x_tonsil_source": 0.5101918798083286,
+            "GSE263617_unresolved_donors": 1.0092591040271843,
+            "GSE300851_mesothelioma_unresolved_donors": 1.088339589063359
+          }
+        },
+        {
+          "seed": 2027,
+          "source_macro_RMSE": 0.7944004648913617,
+          "per_source": {
+            "10x_addon_source": 0.484141147888211,
+            "10x_breast_source": 0.7258286764300967,
+            "10x_glioblastoma_source": 0.9484451004589212,
+            "10x_tonsil_source": 0.5101918798083286,
+            "GSE263617_unresolved_donors": 1.009442005217983,
+            "GSE300851_mesothelioma_unresolved_donors": 1.0883539795446295
+          }
+        }
+      ],
+      "per_source": {
+        "10x_addon_source": 0.484141147888211,
+        "10x_breast_source": 0.7259611027316847,
+        "10x_glioblastoma_source": 0.948640840353811,
+        "10x_tonsil_source": 0.5101918798083286,
+        "GSE263617_unresolved_donors": 1.009408912744899,
+        "GSE300851_mesothelioma_unresolved_donors": 1.088356594402928
+      }
+    },
+    "B0": {
+      "complete": true,
+      "source_macro_RMSE": 0.7944690088873464,
+      "per_seed": [
+        {
+          "seed": 2025,
+          "source_macro_RMSE": 0.7944690088873464,
+          "per_source": {
+            "10x_addon_source": 0.484141147888211,
+            "10x_breast_source": 0.7263564905801823,
+            "10x_glioblastoma_source": 0.9487480917414859,
+            "10x_tonsil_source": 0.5101918798083286,
+            "GSE263617_unresolved_donors": 1.0089754336413028,
+            "GSE300851_mesothelioma_unresolved_donors": 1.088401009664568
+          }
+        },
+        {
+          "seed": 2026,
+          "source_macro_RMSE": 0.7944690088873464,
+          "per_source": {
+            "10x_addon_source": 0.484141147888211,
+            "10x_breast_source": 0.7263564905801823,
+            "10x_glioblastoma_source": 0.9487480917414859,
+            "10x_tonsil_source": 0.5101918798083286,
+            "GSE263617_unresolved_donors": 1.0089754336413028,
+            "GSE300851_mesothelioma_unresolved_donors": 1.088401009664568
+          }
+        },
+        {
+          "seed": 2027,
+          "source_macro_RMSE": 0.7944690088873464,
+          "per_source": {
+            "10x_addon_source": 0.484141147888211,
+            "10x_breast_source": 0.7263564905801823,
+            "10x_glioblastoma_source": 0.9487480917414859,
+            "10x_tonsil_source": 0.5101918798083286,
+            "GSE263617_unresolved_donors": 1.0089754336413028,
+            "GSE300851_mesothelioma_unresolved_donors": 1.088401009664568
+          }
+        }
+      ],
+      "per_source": {
+        "10x_addon_source": 0.484141147888211,
+        "10x_breast_source": 0.7263564905801823,
+        "10x_glioblastoma_source": 0.948748091741486,
+        "10x_tonsil_source": 0.5101918798083286,
+        "GSE263617_unresolved_donors": 1.0089754336413028,
+        "GSE300851_mesothelioma_unresolved_donors": 1.088401009664568
+      }
+    }
+  },
+  "chosen_source_macro_RMSE": 0.7944690088873464,
+  "chosen_minus_B0_per_source": {
+    "10x_addon_source": 0.0,
+    "10x_breast_source": 0.0,
+    "10x_glioblastoma_source": 0.0,
+    "10x_tonsil_source": 0.0,
+    "GSE263617_unresolved_donors": 0.0,
+    "GSE300851_mesothelioma_unresolved_donors": 0.0
+  },
+  "sources_improved_over_B0": 0,
+  "relative_improvement_over_B0_percent": 0.0,
+  "confirmation_complete_sha256": "822df966490ba100059dcd8807e817d549321c8810525058be6d2edcadf5e3b3",
+  "confirmation_result_sha256": "9f4eb42086e0fd2380e8efbcc2914a2d5f3187e72dac2d4ace4a4f3cc8b13a9b",
+  "confirmation_decision_sha256": "e37550aed1f297fc4292f5599caea8699fb5a2c25bc74bc350ffc5ddd842b33f",
+  "training_validation_sha256": "421847fa781af49d05cb90b748db3b5c7fc2c79580c62c59bc41a197a088f91c",
+  "deployment_validation_sha256": "d1a31ff2f2589bde6a5661d4c244e6eb810f75fae7d9a05ff74c592de82625a6",
+  "controlled_CUDA_validation": null,
+  "query_ADT_read_or_hashed_during_freeze": false,
+  "selection_scope": "registered six-source three-optimizer-seed A40 development comparison",
+  "novelty_implemented": false,
+  "final_architecture_including_novelty_frozen": false,
+  "formal_benchmark_complete": false,
+  "external_confirmation_complete": false,
+  "universal_or_SOTA_optimum_claimed": false,
+  "train_cli_model": "b0",
+  "neural_deployed_parameters": 0
+}

@@ -1,8 +1,10 @@
-# STProtein2 compact refinement
+# STProtein2 compact development base
 
-This branch retains the small **B0 reference baseline** and adds optional compact RNA residuals for the next STProtein2 iteration. It keeps reference-only preprocessing, grouped Ridge selection, the fixed physical spatial basis, named 31-channel outputs, artifact identities and separate scoring. Both ordinary residual heads can be trained with nested reference selection or exported from independently verified research checkpoints. The final default architecture is still being selected.
+The frozen compact development default is **B0: reference-fitted RNA Ridge plus the fixed physical spatial correction**. The registered six-source, three-seed comparison retained B0 under its parsimony rule; `own_mlp` had the lowest mean RMSE and remains an explicit comparison. See [the complete decision and negative results](docs/COMPACT_BASE_20261026.md). This freezes the starting point for further research; novelty, the full formal benchmark and reserved external confirmation remain open.
 
-The validated B0 foundation is preserved at Git tag `baseline-b0-20261025`. The current branch extends that version; its confirmation work and remaining requirements are tracked in [REFINEMENT_LOOP.md](docs/REFINEMENT_LOOP.md). Historical code, negative results and checkpoints remain in the original directories and Git history.
+The package keeps reference-only preprocessing, grouped Ridge selection, named 31-channel outputs, artifact identities and separate scoring. Both ordinary residual heads can also be trained with nested reference selection or exported from independently verified research checkpoints.
+
+The validated B0 foundation is preserved at Git tag `baseline-b0-20261025`. The current branch extends that version; completed evidence and remaining requirements are tracked in [REFINEMENT_LOOP.md](docs/REFINEMENT_LOOP.md). Historical code, negative results and checkpoints remain in the original directories and Git history.
 
 ```text
 stprotein2/
