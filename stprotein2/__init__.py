@@ -1,2 +1,2 @@
-"""Clean spatial Ridge foundation for STProtein2 research."""
-__version__ = "0.4.0.dev1"
+"""Compact reference-only spatial protein prediction and nested training."""
+__version__ = "0.4.0.dev2"

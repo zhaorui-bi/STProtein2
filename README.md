@@ -1,6 +1,6 @@
 # STProtein2 compact refinement
 
-This branch retains the small **B0 reference baseline** and adds optional compact RNA residuals for the next STProtein2 iteration. It keeps reference-only preprocessing, grouped Ridge selection, the fixed physical spatial basis, named 31-channel outputs, artifact identities and separate scoring. Verified own-RNA and neighborhood checkpoints can be exported into standalone bundles. The final default architecture is still being selected.
+This branch retains the small **B0 reference baseline** and adds optional compact RNA residuals for the next STProtein2 iteration. It keeps reference-only preprocessing, grouped Ridge selection, the fixed physical spatial basis, named 31-channel outputs, artifact identities and separate scoring. Both ordinary residual heads can be trained with nested reference selection or exported from independently verified research checkpoints. The final default architecture is still being selected.
 
 The validated B0 foundation is preserved at Git tag `baseline-b0-20261025`. The current branch extends that version; its confirmation work and remaining requirements are tracked in [REFINEMENT_LOOP.md](docs/REFINEMENT_LOOP.md). Historical code, negative results and checkpoints remain in the original directories and Git history.
 
@@ -13,6 +13,9 @@ stprotein2/
   neural.py        # Optional compact own-RNA / neighborhood residuals
   portable.py      # Numeric preprocessing and frozen coefficients
   deployment.py    # Export independently verified development checkpoints
+  training.py      # Optional C0 Student fitting and exact checkpoint resume
+  selection.py     # Source-held epoch/gate selection and refitting
+  gates.py         # Conservative reference-OOF binary switches
   pipeline.py      # Train a bundle and predict RNA-only slices
   io.py            # Atomic artifacts and integrity
   provenance.py    # Source identities
@@ -46,7 +49,7 @@ python -m pytest -q
 
 For actual data use `--genes 4000`. `--query` excludes its complete source from all training and preprocessing; omit it when fitting a final reference-only bundle from an already frozen reference registry. Prediction requires only a bundle and one RNA slice. Its output includes `prediction.h5ad`, components in `prediction.npz`, gene coverage and integrity records.
 
-`train` currently fits B0. Optional neural inference and export are documented in [PORTABLE_DEPLOYMENT.md](docs/PORTABLE_DEPLOYMENT.md); a complete clean neural training/selection API remains in development. Neither export nor checkpoint conversion selects a new model.
+`train` defaults to B0. For compact residuals, install `.[neural]` and use `--model own_mlp` or `--model neighbor_mlp`, following [TRAINING.md](docs/TRAINING.md). [PORTABLE_DEPLOYMENT.md](docs/PORTABLE_DEPLOYMENT.md) covers standalone inference and checkpoint conversion. Neither export nor conversion selects a new model.
 
 Measured query ADT is scored only after prediction:
 

@@ -110,6 +110,10 @@ class CompactResidual(nn.Module):
         super().__init__()
         self.cfg = cfg
         self.encoder = RNAEnsemble(cfg)
+        self._initialize_residual()
+
+    def _initialize_residual(self):
+        cfg = self.cfg
         n_in = cfg.hidden if cfg.residual_head == 'own_mlp' else 2 * cfg.hidden + cfg.qc_dim
         self.readout = nn.Sequential(nn.Linear(n_in, cfg.residual_width), nn.GELU(),
                                      nn.Linear(cfg.residual_width, cfg.n_proteins, bias=False))
@@ -120,24 +124,34 @@ class CompactResidual(nn.Module):
         self.register_buffer('gamma_state', torch.ones(31) if own else torch.zeros(31))
         self.register_buffer('gamma_local', torch.zeros(31) if own else torch.ones(31))
 
-    def forward(self, x, availability, qc, edge_index=None, degree=None):
+    def _check_inputs(self, x, availability, qc):
         if (x.ndim != 2 or x.shape[1] != self.cfg.n_genes or qc.shape != (len(x), self.cfg.qc_dim)
                 or not torch.isfinite(x).all() or not torch.isfinite(qc).all()
                 or availability.shape not in {(self.cfg.n_genes,), x.shape}
                 or not torch.all((availability == 0) | (availability == 1))):
             raise ValueError('Finite aligned RNA/QC and binary availability are required')
+
+    def forward(self, x, availability, qc, edge_index=None, degree=None):
+        self._check_inputs(x, availability, qc)
         h = self.encoder(x, availability, qc).mean(1)
+        return self._components(h, qc, edge_index, degree)
+
+    def _components(self, h, qc, edge_index=None, degree=None, enabled=True):
         own = self.cfg.residual_head == 'own_mlp'
-        if own:
-            raw = self.readout(h)
-        else:
-            if (edge_index is None or degree is None or degree.shape != (len(x),)
+        if not own:
+            if (edge_index is None or degree is None or degree.shape != (len(h),)
                     or edge_index.ndim != 2 or edge_index.shape[0] != 2):
                 raise ValueError('The complete physical graph is required for the neighborhood head')
+        if not enabled:
+            raw = h.new_zeros(len(h), self.cfg.n_proteins)
+        elif own:
+            raw = self.readout(h)
+        else:
             context = torch.cat([h, neighbor_mean(h, edge_index, degree), qc], 1)
             self_context = torch.cat([h, h, qc], 1)
             raw = self.readout(context) - self.readout(self_context)
-        raw = raw * torch.sigmoid(self.gate(torch.cat([h, qc], 1)))
+        if enabled:
+            raw = raw * torch.sigmoid(self.gate(torch.cat([h, qc], 1)))
         zero = torch.zeros_like(raw)
         state, local = (raw, zero) if own else (zero, center_local(raw, degree))
         return {'state_delta': state, 'local_delta': local, 'local_raw': raw,

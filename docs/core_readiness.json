@@ -1,7 +1,7 @@
 {
   "schema": "stprotein2_clean_foundation_candidate_v1",
   "status": "compact_refinement_in_progress",
-  "updated_unix": 1792921907.4297712,
+  "updated_unix": 1792924521.774486,
   "core_evidence_passed": true,
   "final_predictive_architecture_frozen": false,
   "accuracy_improvement_claimed": false,
@@ -12,8 +12,11 @@
   "validated_B0_tag": "baseline-b0-20261025",
   "validated_B0_commit": "2f5f573",
   "current_branch": "compact-refinement-20261025",
-  "current_neural_bundle_and_training_API_validated": false,
+  "current_neural_bundle_and_training_API_validated": true,
   "compact_confirmation": "/fs04/scratch2/nd32/zhaorui/STProtein/STProtein2/runs/stprotein2_compact_confirmation_20261025_v1",
   "current_portable_neural_export_and_inference_validated": true,
-  "current_deployment_validation_sha256": "350ba7a569593fee45490d1982e3f562aea467e94c6f9d15f6d179121808f50a"
+  "current_deployment_validation_sha256": "d1a31ff2f2589bde6a5661d4c244e6eb810f75fae7d9a05ff74c592de82625a6",
+  "current_training_validation_scope": "CPU parity, 62 complete synthetic nested fits and real RNA-only deployment",
+  "current_CUDA_training_parity_validated": false,
+  "current_training_validation_sha256": "421847fa781af49d05cb90b748db3b5c7fc2c79580c62c59bc41a197a088f91c"
 }

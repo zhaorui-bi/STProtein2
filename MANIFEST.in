@@ -3,4 +3,6 @@ recursive-include examples *.py
 recursive-include evaluation *.py
 recursive-include docs *.md *.json
 recursive-include tests *.py
+recursive-include configs *.json
+recursive-include scripts *.py
 global-exclude *.py[cod] __pycache__

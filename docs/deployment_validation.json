@@ -1,35 +1,31 @@
 {
-  "schema": "compact_deployment_validation_v1",
+  "schema": "compact_deployment_validation_v2",
   "status": "passed",
-  "observed_unix": 1792921907.4174287,
+  "observed_unix": 1792924521.7632859,
   "source_sha256": {
-    "stprotein2/__init__.py": "947ca663ea616b253df3f5cce237dc724e6043c720ac30df6e12d76ce875007b",
+    "stprotein2/__init__.py": "5b145269b306bb1258f8cea8d09297ea882b90d83adb92d79198823c6264ddcb",
     "stprotein2/__main__.py": "6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279",
     "stprotein2/anchor.py": "b6a8d1bf16fa980bbd2fa0cf9e906d040918fafef708a0d892e1907c6b7b160a",
-    "stprotein2/cli.py": "7f1f795e2120a4ffc6a6fdcf580c413516139027e8058b328036abf8d614d700",
+    "stprotein2/cli.py": "ed8dbeaa270c814d4c3883f863b96b861a73af523f642000d484a03fcce714ac",
     "stprotein2/data.py": "0ba8311e1fd45a5dc12d3af43493c2cc7d4298c7992f9eced78da81ad3d85355",
-    "stprotein2/deployment.py": "e08ac6453e2ee89598febffbbd2540158ef4d87a55c0409593d1990bd6b5690f",
+    "stprotein2/deployment.py": "34dce59920f795637a046a6dd1ae106f4f9ed603951c69ec0e967cddb7409278",
+    "stprotein2/gates.py": "738f74dbaf54f7b1ee4549483bad2e6781cb40a8ea9c953eeaa05378af7194e5",
     "stprotein2/graph.py": "0f8b94ff4e926ddf6c7324ff81e2d4dabff2c2b6d1a365e357ed73607b7506be",
     "stprotein2/io.py": "6e0ca383d36328620b7d8cf29139fd09e635d0d53829ded3e5bc79c3dd4b71fe",
-    "stprotein2/neural.py": "8b7a60d8ef28c7975e36cc03473e5776571b59481b8efb1b9bf0acce83895174",
+    "stprotein2/neural.py": "fcb66aa40d2de895e5ce2aa40e0408b640d00f465d8a5bbf07dcdb81971ed4a1",
     "stprotein2/paths.py": "55f44edc4545a7e06103dc0fd872f89895940e92f36f5a60a93911c51ec9ebc5",
     "stprotein2/pipeline.py": "30f230cdf5926aaccc9500b92a69ad8cc5d19a62f3041f13bdce38722c7f9b79",
     "stprotein2/portable.py": "1ff94efc37af6627cb3b9540fecdc198524bffab511c9e847ad71e79f05e1885",
     "stprotein2/provenance.py": "0867982a0e9e4a7a612ca5abe8352132c45c2aa6ec07e835374a4b16bf21cb81",
-    "stprotein2/smoothing.py": "35b1dca390def381b4ab4d049750b4dcf3fe5b4a39e5430e1aca584d919dc394"
+    "stprotein2/selection.py": "3f8674839230a2f91fdf29c148ea7cbd9fec92c574736eedc6eab4db83d571dd",
+    "stprotein2/smoothing.py": "35b1dca390def381b4ab4d049750b4dcf3fe5b4a39e5430e1aca584d919dc394",
+    "stprotein2/training.py": "a7277ded922995effdcad0ac2f387e7f6672cbfc43e39fe34c552ae64fb83a0f"
   },
-  "real_wheel_replay": "runs/portable_bundle_check_20261025_v3/complete.json",
-  "real_wheel_replay_sha256": "b50592c00886633f4f0588794dc8e5a7faa57ed2338aebc6dc5c510fcdaa22fe",
+  "real_wheel_replay": "runs/portable_bundle_check_20261025_v4/complete.json",
+  "real_wheel_replay_sha256": "6cd97f2247a20367d5da10f5592a6fa8e19a315beffb7c2301532af68c358ece",
   "validation_script_sha256": "8b88f950eba8aafbc8cc8ce9201b961355542c963114b5a18bdce75ec8ea5755",
-  "functional_tests": {
-    "command": "CUDA_VISIBLE_DEVICES= OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 python -m pytest -q tests",
-    "stdout": "12 passed in 34.36s",
-    "passed": 12,
-    "test_sha256": {
-      "tests/test_clean_core.py": "a9c7cd29f27854309e32989d9368233cf3a8a5545cae2db7ec433b8811fc2c72",
-      "tests/test_portable_deployment.py": "5d9b6000b3191b780c5dcbb8470b266a636b82c26d0dbd5e528e97b2c08b6669"
-    }
-  },
+  "functional_tests_passed": 15,
+  "functional_test_log_sha256": "f762c1660688c074ce17690db7c12c974a2586fdd2d7ef9318ac20a147ed690f",
   "real_cases": [
     {
       "head": "own_mlp",
@@ -45,7 +41,7 @@
         "local_delta": 0.0,
         "local_raw": 1.1920928955078125e-06
       },
-      "bundle_complete_sha256": "f7fc88a89b86e76f08c1b916ff07f2fe1b3dd387aa932e84e7db7cc320559756",
+      "bundle_complete_sha256": "9ea669372bff173e004fbf605e2493bd7e4bd92dd9059ea52f4e3417a302bb53",
       "verification_report_sha256": "c8c8cd3509ebcfea50a93548179f64d2f0326214500c29e5116d62c459ededda"
     },
     {
@@ -62,12 +58,13 @@
         "local_delta": 1.0598450899124146e-06,
         "local_raw": 1.0654330253601074e-06
       },
-      "bundle_complete_sha256": "9c38d623db4e2f45b45b208d42e171131f2036734bfa21d1266267b29f628af4",
+      "bundle_complete_sha256": "513b3747ffaa84af82073ca7238854e9fe01ad1356a7cb34667248a7edebf7aa",
       "verification_report_sha256": "d0629ce4b9bb3119c21984bdb93591709a44d36965ce64feac66702df4fa3172"
     }
   ],
   "measured_protein_read_or_hashed": false,
   "portable_neural_export_and_inference_validated": true,
-  "clean_neural_training_API_validated": false,
+  "clean_CPU_neural_training_API_validated": true,
+  "training_validation_sha256": "421847fa781af49d05cb90b748db3b5c7fc2c79580c62c59bc41a197a088f91c",
   "final_architecture_selected": false
 }

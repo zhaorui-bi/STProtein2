@@ -1,0 +1,28 @@
+{
+  "model": {
+    "n_genes": 4000,
+    "width": 256,
+    "hidden": 128,
+    "members": 8,
+    "qc_dim": 4,
+    "dropout": 0.1,
+    "use_encoder_qc": true,
+    "residual_width": 256,
+    "weight_modulated_input": true
+  },
+  "train": {
+    "epochs": 80,
+    "warmup_epochs": 8,
+    "checkpoint_delay": 8,
+    "validate_every": 4,
+    "patience": 6,
+    "seed": 2025,
+    "threads": 2,
+    "lr": 0.001,
+    "optimizer_epsilon": 1e-8,
+    "weight_decay": 1e-4,
+    "clip_grad": 1.0,
+    "auxiliary_weight": 0.2,
+    "checkpoint_representations": true
+  }
+}

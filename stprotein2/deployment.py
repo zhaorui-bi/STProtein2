@@ -132,16 +132,14 @@ def export_research(run, verification, output):
     return output
 
 
-def export_baseline(run, output):
-    """Strip a completed clean B0 run to its required runtime artifacts."""
+def export_clean(run, output):
+    """Strip a completed clean training run to its required runtime artifacts."""
     run, output = Path(run).resolve(), Path(output).resolve()
     if output.exists() or output == run or output in run.parents or run in output.parents:
         raise ValueError('Use a fresh separate bundle directory')
     from .pipeline import load_bundle
     load_bundle(run)
     marker = verify_marker(run, 'bundle_complete.json')
-    if read(run / 'manifest.json')['protocol']['stage'] != 'clean_spatial_ridge_foundation':
-        raise ValueError('A clean B0 training run is required')
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='.stprotein2-export-', dir=output.parent) as temporary:
         stage = Path(temporary) / 'bundle'; stage.mkdir()

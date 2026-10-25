@@ -15,7 +15,7 @@ from scipy import sparse
 from sklearn.preprocessing import StandardScaler
 
 from stprotein2.data import PANEL, ReferenceTransform
-from stprotein2.deployment import export_baseline, export_research
+from stprotein2.deployment import export_clean, export_research
 from stprotein2.io import sha256, write_json
 from stprotein2.pipeline import load_bundle, load_residual, predict_array, predict_file, train
 from stprotein2.portable import FrozenScaler, load_anchor, scaler_arithmetic, write_anchor
@@ -44,7 +44,7 @@ def test_baseline_export_survives_deleted_training_inputs(tmp_path):
     registry, groups = cohort(tmp_path)
     run, bundle = tmp_path / 'run', tmp_path / 'bundle'
     train(registry, groups, run, query='query', n_genes=8)
-    export_baseline(run, bundle)
+    export_clean(run, bundle)
     assert {p.name for p in bundle.iterdir()} == {'manifest.json', 'bundle_complete.json', 'anchor.joblib'}
     query_path = tmp_path / 'query_rna.h5ad'
     expected = predict_array(load_bundle(run), load_bundle(run)['transform'].transform(ad.read_h5ad(query_path), 'query', 'q'))
