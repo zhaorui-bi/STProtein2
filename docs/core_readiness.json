@@ -11,7 +11,6 @@
   "clean_validation_sha256": "dde9e17c57273b7a6adbf8db03d8954a287835abfe725c0e90ca971259144164",
   "validated_B0_tag": "baseline-b0-20261025",
   "validated_B0_commit": "2f5f573",
-  "current_branch": "compact-refinement-20261025",
   "current_neural_bundle_and_training_API_validated": true,
   "compact_confirmation": "/fs04/scratch2/nd32/zhaorui/STProtein/STProtein2/runs/stprotein2_compact_confirmation_20261025_v1",
   "current_portable_neural_export_and_inference_validated": true,
@@ -29,5 +28,9 @@
   "current_CUDA_training_validation_sha256": "0a0a6e4ee49e51deb899014c3b21cd9d24d9c42cad55eb4a9c7877615221aba2",
   "formal_benchmark_complete": false,
   "external_confirmation_complete": false,
-  "novelty_implemented": false
+  "novelty_implemented": false,
+  "validated_refinement_branch": "compact-refinement-20261025",
+  "development_base_tag": "compact-base-20261026",
+  "adopted_in_main": true,
+  "main_source_identity_matches_frozen_development_base": true
 }

@@ -1,0 +1,35 @@
+{
+  "status": "passed",
+  "observed_unix": 1792934351.2698178,
+  "merge_commit": "6bc9962df71968ed42fcea23f75b77d045c77dad",
+  "development_base_tag": "compact-base-20261026",
+  "source_sha256": {
+    "stprotein2/__init__.py": "5b145269b306bb1258f8cea8d09297ea882b90d83adb92d79198823c6264ddcb",
+    "stprotein2/__main__.py": "6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279",
+    "stprotein2/anchor.py": "b6a8d1bf16fa980bbd2fa0cf9e906d040918fafef708a0d892e1907c6b7b160a",
+    "stprotein2/cli.py": "ed8dbeaa270c814d4c3883f863b96b861a73af523f642000d484a03fcce714ac",
+    "stprotein2/data.py": "0ba8311e1fd45a5dc12d3af43493c2cc7d4298c7992f9eced78da81ad3d85355",
+    "stprotein2/deployment.py": "34dce59920f795637a046a6dd1ae106f4f9ed603951c69ec0e967cddb7409278",
+    "stprotein2/gates.py": "738f74dbaf54f7b1ee4549483bad2e6781cb40a8ea9c953eeaa05378af7194e5",
+    "stprotein2/graph.py": "0f8b94ff4e926ddf6c7324ff81e2d4dabff2c2b6d1a365e357ed73607b7506be",
+    "stprotein2/io.py": "6e0ca383d36328620b7d8cf29139fd09e635d0d53829ded3e5bc79c3dd4b71fe",
+    "stprotein2/neural.py": "fcb66aa40d2de895e5ce2aa40e0408b640d00f465d8a5bbf07dcdb81971ed4a1",
+    "stprotein2/paths.py": "55f44edc4545a7e06103dc0fd872f89895940e92f36f5a60a93911c51ec9ebc5",
+    "stprotein2/pipeline.py": "30f230cdf5926aaccc9500b92a69ad8cc5d19a62f3041f13bdce38722c7f9b79",
+    "stprotein2/portable.py": "1ff94efc37af6627cb3b9540fecdc198524bffab511c9e847ad71e79f05e1885",
+    "stprotein2/provenance.py": "0867982a0e9e4a7a612ca5abe8352132c45c2aa6ec07e835374a4b16bf21cb81",
+    "stprotein2/selection.py": "3f8674839230a2f91fdf29c148ea7cbd9fec92c574736eedc6eab4db83d571dd",
+    "stprotein2/smoothing.py": "35b1dca390def381b4ab4d049750b4dcf3fe5b4a39e5430e1aca584d919dc394",
+    "stprotein2/training.py": "a7277ded922995effdcad0ac2f387e7f6672cbfc43e39fe34c552ae64fb83a0f"
+  },
+  "frozen_base_record_sha256": "fe6422cb5ab1436908b208a9253766ff1b20c4a26518248114640807eff1c4fa",
+  "core_sources_unchanged_from_validated_refinement": true,
+  "tests": {
+    "command": "OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 /fs04/scratch2/nd32/zhaorui/STProtein/.venv-cuda/bin/python -m pytest -q",
+    "exit_code": 0,
+    "observed_stdout_summary": "19 passed in 50.48s"
+  },
+  "original_research_and_benchmark_source_pins_unchanged": true,
+  "full_research_goal_complete": false,
+  "external_expression_accessed": false
+}
