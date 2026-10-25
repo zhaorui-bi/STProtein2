@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "query": "Breast",
+  "shape": [
+    4164,
+    31
+  ],
+  "maximum_absolute_error": 0.0,
+  "bitwise_equal": true,
+  "query_ADT_opened": false,
+  "external_samples_opened": false,
+  "scope": "Replay the frozen historical anchor; no clean-model training or accuracy claim",
+  "legacy_anchor_sha256": "95d7067c5a193b04aebc1b64030c0da5c0afb9acc68433c508254579a1761d97",
+  "stable_prediction_sha256": "695a905942397111f344e8f79d04fd6765e5d37e243f953f4c72b954a30d342a",
+  "query_RNA_sha256": "5dde49a3f7f24550a53d18649776d415ca537cdf647a6d57b957639cf62756d2"
+}

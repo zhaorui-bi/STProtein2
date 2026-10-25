@@ -1,0 +1,12 @@
+{
+  "schema": "stprotein2_clean_foundation_candidate_v1",
+  "status": "ready_for_innovation_baseline",
+  "updated_unix": 1792912362.3094718,
+  "core_evidence_passed": true,
+  "final_predictive_architecture_frozen": false,
+  "accuracy_improvement_claimed": false,
+  "baseline": "reference-selected Ridge + fixed alpha0.5 physical B0",
+  "research_run": "/fs04/scratch2/nd32/zhaorui/STProtein/STProtein2/runs/stprotein2_core_20261025_v1",
+  "core_report_sha256": "4f53534a8a0164718f1fd0be7550f3ab89af9160409437b6bb1aded52f9aa268",
+  "clean_validation_sha256": "dde9e17c57273b7a6adbf8db03d8954a287835abfe725c0e90ca971259144164"
+}

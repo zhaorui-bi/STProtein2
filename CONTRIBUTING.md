@@ -1,31 +1,3 @@
 # Development
 
-Use Python 3.10 or newer. From the repository root:
-
-```bash
-python -m pip install -e '.[test]'
-python -m pytest -q
-```
-
-Optional partition-runtime checks need `.[test,partition]`; CUDA tests require a compatible PyTorch installation and GPU. Missing optional runtimes produce explicit skips. A focused boundary/deployment check is:
-
-```bash
-python -m pytest -q tests/test_package_layout.py tests/test_deploy.py tests/test_dpas_evaluation.py
-```
-
-Put reusable software in `stprotein2/`, measured-ADT metrics and comparison tools in `evaluation/`, and experimental variants/baselines in `research/`. Dependencies point from repository tools to the core. The core must not import either repository tool package. Keep model selection reference-only and evaluation separate from prediction.
-
-Core algorithm changes should include relevant numerical, data-isolation or recovery checks. Update the API guide for public-interface changes. Keep large datasets, run directories and model checkpoints out of Git. Preserve historical validation records as evidence for their recorded version.
-
-Build distributions with:
-
-```bash
-python -m pip install build
-python -m build
-```
-
-The wheel includes only `stprotein2`. The source archive also includes evaluation, research, examples, configs and documentation. CI tests a built wheel from outside the checkout, including actual demo training, export and RNA-only prediction.
-
-CI covers Python 3.10 and 3.12, builds the wheel from the source archive, checks distribution metadata and installed dependencies, and runs the complete regression suite. The package version is defined once in `stprotein2/__init__.py`; `stprotein2 --version` reports it without loading scientific libraries.
-
-Runs, anchor caches and bundles bind source hashes. Use a fresh output/cache directory after changing source; preserve the matching environment for existing artifacts. Never weaken integrity checks to reuse incompatible results.
+Install with `python -m pip install -e '.[test]'` and run `python -m pytest -q`. Keep measured query protein out of training and inference. New mechanisms must be separately registered and compared against this unchanged B0, own-RNA and ordinary-neighborhood controls. Scientific changes require new artifacts and matched source-held evaluation; engineering parity alone does not establish accuracy gains.

@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "core_wheel_files": 11,
+  "torch_dependency": false,
+  "training_export_inference_outside_checkout": true,
+  "query_ADT_absent": true,
+  "prediction_shape": [
+    16,
+    31
+  ],
+  "wheel_sha256": "9b88fcbbd492ea157e55e81c3e1955680296e6f6abaff477ee7abbb934dcb54d"
+}

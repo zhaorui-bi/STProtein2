@@ -1,0 +1,42 @@
+{
+  "parent_commit": "ce3eb10",
+  "candidate_status": "draft_pending_reduced_core_evidence",
+  "retained_sources": {
+    "stprotein2/data.py": {
+      "origin": "stprotein2/data.py",
+      "original_sha256": "6f6a40a53d14cd0e7a9942909c4c0a5cdf833adeb591ac781178a6ea325833db"
+    },
+    "stprotein2/graph.py": {
+      "origin": "stprotein2/graph.py",
+      "original_sha256": "de6814d3ad9fefb4cd0b686a9479d8c4f5c6f7b7e0433697918851036c9a6059"
+    },
+    "stprotein2/anchor.py": {
+      "origin": "stprotein2/training/anchors.py",
+      "original_sha256": "309b1dbfc3ecac0da0b00fc9eac028d75b578290a891db6b9b2b6bd310c328e6"
+    },
+    "stprotein2/smoothing.py": {
+      "origin": "stprotein2/models/smoothing.py",
+      "original_sha256": "35b1dca390def381b4ab4d049750b4dcf3fe5b4a39e5430e1aca584d919dc394"
+    },
+    "stprotein2/paths.py": {
+      "origin": "stprotein2/paths.py",
+      "original_sha256": "55f44edc4545a7e06103dc0fd872f89895940e92f36f5a60a93911c51ec9ebc5"
+    },
+    "stprotein2/provenance.py": {
+      "origin": "stprotein2/provenance.py",
+      "original_sha256": "0867982a0e9e4a7a612ca5abe8352132c45c2aa6ec07e835374a4b16bf21cb81"
+    },
+    "evaluation/metrics.py": {
+      "origin": "evaluation/metrics.py",
+      "original_sha256": "a23c8631859fdbcb5d12846fd9f1fd6967006acb616b6509789c1ec80ed9e246"
+    },
+    "evaluation/spatial.py": {
+      "origin": "evaluation/spatial.py",
+      "original_sha256": "20e075e489d79f625da4ece037633842dc2450ef87d0e68d53fa07396f668c2f"
+    },
+    "stprotein2/io.py": {
+      "origin": "stprotein2/io.py",
+      "original_sha256": "626b1ba1cb4654ff668a04406ae3b147caba4a3219ec315cb28e4c339e052c5f"
+    }
+  }
+}
