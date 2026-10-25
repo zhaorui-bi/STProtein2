@@ -69,32 +69,78 @@ def train(registry, groups, output, *, query=None, n_genes=4000, threads=2):
 
 def load_bundle(folder):
     folder = Path(folder).resolve()
-    verify_marker(folder, 'bundle_complete.json')
+    complete = verify_marker(folder, 'bundle_complete.json')
     manifest = read(folder / 'manifest.json')
     if manifest['source_sha256'] != sources():
         raise ValueError('Bundle requires its matching clean implementation')
     protocol = manifest['protocol']
-    if (protocol['stage'] != 'clean_spatial_ridge_foundation' or protocol['spatial_alpha'] != .5
+    if (protocol['stage'] not in {'clean_spatial_ridge_foundation', 'compact_reference_residual_bundle_v1'}
+            or protocol['spatial_alpha'] != .5
+            or protocol['graph_k'] != 6 or protocol['graph_radius'] != 2.5
             or protocol['proteins'] != list(PANEL) or protocol['query_ADT_read_or_hashed']):
         raise ValueError('Bundle does not match the fixed B0 contract')
-    anchor = joblib.load(folder / 'anchor.joblib')
+    if protocol['stage'] == 'compact_reference_residual_bundle_v1':
+        from .portable import load_anchor
+        if set(complete['artifacts']) != {'anchor.npz', 'transform.json', 'residual.pt', 'conversion.json'}:
+            raise ValueError('The portable residual bundle is incomplete')
+        anchor = load_anchor(folder)
+    else:
+        if set(complete['artifacts']) != {'anchor.joblib'}:
+            raise ValueError('The B0 bundle is incomplete')
+        anchor = joblib.load(folder / 'anchor.joblib')
     if (anchor['reference_names'] != protocol['reference_names']
             or anchor['transform'].fitted_names_ != protocol['reference_names']
+            or len(anchor['transform'].genes_) != protocol['n_genes']
             or not anchor['independently_fitted'] or anchor['residual_training_seen']):
         raise ValueError('Anchor reference identity differs')
     return anchor
 
 
-def predict_array(anchor, view):
+def load_residual(folder):
+    """Load only the small optional residual; B0 needs no torch installation."""
+    folder = Path(folder)
+    protocol = read(folder / 'manifest.json')['protocol']
+    if protocol['stage'] != 'compact_reference_residual_bundle_v1':
+        return None
+    verify_marker(folder, 'bundle_complete.json')
+    import torch
+    from .neural import CompactResidual, ResidualConfig
+    saved = torch.load(folder / 'residual.pt', map_location='cpu', weights_only=True)
+    if (saved['schema'] != 'compact_residual_weights_v1' or saved['config'] != protocol['residual_config']
+            or saved['config']['residual_head'] != protocol['neural_head']):
+        raise ValueError('Residual specification differs from the bundle manifest')
+    model = CompactResidual(ResidualConfig(**saved['config'])).eval()
+    model.load_state_dict(saved['state_dict'], strict=True)
+    for name in ('gamma_state', 'gamma_local'):
+        if not torch.all((getattr(model, name) == 0) | (getattr(model, name) == 1)):
+            raise ValueError('Bundle gates must be binary')
+    return model
+
+
+def predict_array(anchor, view, residual=None):
     """Canonical stable anchor arithmetic followed by the existing physical B0."""
     x = np.where(view.availability > 0, view.x, 0).astype(np.float64)
     ridge = anchor['model']
     base = (x @ ridge.coef_.astype(np.float64).T + ridge.intercept_.astype(np.float64)).astype(np.float32)
     graph = physical_graph(view.coordinates, k=6, radius=2.5)
     local = spatial_residual(base, graph)
-    return {'prediction': apply(base, local, .5), 'rna_base': base,
+    result = {'prediction': apply(base, local, .5), 'rna_base': base,
             'spatial_delta': local.astype(np.float32), 'barcodes': view.barcodes,
             'proteins': np.asarray(PANEL)}
+    if residual is not None:
+        import torch
+        with torch.inference_mode():
+            components = residual(torch.as_tensor(view.x), torch.as_tensor(view.availability),
+                                  torch.as_tensor(view.qc), torch.as_tensor(graph.edge_index, dtype=torch.long),
+                                  torch.as_tensor(graph.degree, dtype=torch.float32))
+        result['base'] = result['prediction'].copy()
+        for name in ('state_delta', 'local_delta', 'local_raw'):
+            result[name] = components[name].numpy().copy()
+        result['gamma_state'] = residual.gamma_state.numpy().copy()
+        result['gamma_local'] = residual.gamma_local.numpy().copy()
+        result['prediction'] = (result['base'] + result['gamma_state'] * result['state_delta']
+                                + result['gamma_local'] * result['local_delta'])
+    return result
 
 
 def predict_file(bundle, rna, output, *, sample='query', threads=2):
@@ -108,10 +154,14 @@ def predict_file(bundle, rna, output, *, sample='query', threads=2):
     if output == bundle or output in bundle.parents or bundle in output.parents:
         raise ValueError('Prediction and bundle directories must be separate')
     anchor = load_bundle(bundle)
+    residual = load_residual(bundle)
+    if residual is not None:
+        import torch
+        torch.set_num_threads(threads)
     measured = ad.read_h5ad(rna)
     view = anchor['transform'].transform(measured, sample, 'query')
     with threadpool_limits(threads):
-        values = predict_array(anchor, view)
+        values = predict_array(anchor, view, residual)
     if values['prediction'].shape != (len(measured), 31) or not np.isfinite(values['prediction']).all():
         raise ValueError('Prediction is not a finite named N x 31 matrix')
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -123,7 +173,7 @@ def predict_file(bundle, rna, output, *, sample='query', threads=2):
                             var=pd.DataFrame(index=PANEL))
         result.obsm['spatial'] = view.coordinates
         result.write_h5ad(stage / 'prediction.h5ad')
-        write_json(stage / 'manifest.json', {'stage': 'clean_B0_RNA_only_prediction', 'sample': sample,
+        write_json(stage / 'manifest.json', {'stage': 'clean_RNA_only_prediction', 'sample': sample,
                    'rna_sha256': sha256(rna), 'bundle_complete_sha256': sha256(bundle / 'bundle_complete.json'),
                    'gene_coverage': float(view.availability.mean()), 'measured_protein_access': False,
                    'source_sha256': sources()})

@@ -23,6 +23,7 @@ dependencies = [
 
 [project.optional-dependencies]
 test = ["pytest>=7"]
+neural = ["torch>=2.2"]
 
 [project.scripts]
 stprotein2 = "stprotein2.cli:main"

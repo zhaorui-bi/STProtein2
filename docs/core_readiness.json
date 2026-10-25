@@ -1,12 +1,19 @@
 {
   "schema": "stprotein2_clean_foundation_candidate_v1",
-  "status": "ready_for_innovation_baseline",
-  "updated_unix": 1792912362.3094718,
+  "status": "compact_refinement_in_progress",
+  "updated_unix": 1792921907.4297712,
   "core_evidence_passed": true,
   "final_predictive_architecture_frozen": false,
   "accuracy_improvement_claimed": false,
   "baseline": "reference-selected Ridge + fixed alpha0.5 physical B0",
   "research_run": "/fs04/scratch2/nd32/zhaorui/STProtein/STProtein2/runs/stprotein2_core_20261025_v1",
   "core_report_sha256": "4f53534a8a0164718f1fd0be7550f3ab89af9160409437b6bb1aded52f9aa268",
-  "clean_validation_sha256": "dde9e17c57273b7a6adbf8db03d8954a287835abfe725c0e90ca971259144164"
+  "clean_validation_sha256": "dde9e17c57273b7a6adbf8db03d8954a287835abfe725c0e90ca971259144164",
+  "validated_B0_tag": "baseline-b0-20261025",
+  "validated_B0_commit": "2f5f573",
+  "current_branch": "compact-refinement-20261025",
+  "current_neural_bundle_and_training_API_validated": false,
+  "compact_confirmation": "/fs04/scratch2/nd32/zhaorui/STProtein/STProtein2/runs/stprotein2_compact_confirmation_20261025_v1",
+  "current_portable_neural_export_and_inference_validated": true,
+  "current_deployment_validation_sha256": "350ba7a569593fee45490d1982e3f562aea467e94c6f9d15f6d179121808f50a"
 }

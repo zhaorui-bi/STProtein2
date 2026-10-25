@@ -24,12 +24,13 @@ def source_manifest():
 
 def verify_marker(output, filename):
     """Verify a completed run and every artifact bound by its marker."""
-    output = Path(output)
+    output = Path(output).resolve()
     marker = json.loads((output / filename).read_text())
     if sha256(output / 'manifest.json') != marker['manifest_sha256']:
         raise ValueError('Completed manifest identity changed')
     for relative, checksum in marker['artifacts'].items():
-        if sha256(output / relative) != checksum:
+        artifact = (output / relative).resolve()
+        if output not in artifact.parents or sha256(artifact) != checksum:
             raise ValueError('Completed artifact identity changed: ' + relative)
     return marker
 
