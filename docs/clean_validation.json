@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "scope": "clean B0 implementation, not final model superiority",
+  "tests_passed": 7,
+  "core_Python_files": 11,
+  "core_source_lines": 632,
+  "real_B0_maximum_absolute_error": 0.0,
+  "real_B0_shape": [
+    4164,
+    31
+  ],
+  "wheel_outside_checkout": true,
+  "source_sha256": {
+    "stprotein2/__init__.py": "6de72be142e9edf050ce7d49c0b7bc2b34fcd2d90d19e3078747289f1d3469d4",
+    "stprotein2/__main__.py": "6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279",
+    "stprotein2/anchor.py": "b6a8d1bf16fa980bbd2fa0cf9e906d040918fafef708a0d892e1907c6b7b160a",
+    "stprotein2/cli.py": "ff3160efbd3cbf8e60d5f8d3834ffb981499cb1634e478e8bfbcc29f759ac89f",
+    "stprotein2/data.py": "0ba8311e1fd45a5dc12d3af43493c2cc7d4298c7992f9eced78da81ad3d85355",
+    "stprotein2/graph.py": "0f8b94ff4e926ddf6c7324ff81e2d4dabff2c2b6d1a365e357ed73607b7506be",
+    "stprotein2/io.py": "9a433006274d44180762d9da76fb66237a4437780a1c6f45b7f3cdb3a5cd3db3",
+    "stprotein2/paths.py": "55f44edc4545a7e06103dc0fd872f89895940e92f36f5a60a93911c51ec9ebc5",
+    "stprotein2/pipeline.py": "871af1e8f133b7191365b561dbe951c3e38bf6b6378f671da8ee0412304ecf84",
+    "stprotein2/provenance.py": "0867982a0e9e4a7a612ca5abe8352132c45c2aa6ec07e835374a4b16bf21cb81",
+    "stprotein2/smoothing.py": "35b1dca390def381b4ab4d049750b4dcf3fe5b4a39e5430e1aca584d919dc394"
+  },
+  "evidence_sha256": {
+    "docs/test_evidence.json": "c54e4696122c196c8a6f7d7128bb161adcf75ff3f3f0403939b50e45a8cf5d06",
+    "docs/real_B0_parity.json": "49ba8c35ba5707aaf3e5774d902bda51bbda08fcf6e187255c0fcae2bc5b6db5",
+    "docs/wheel_validation.json": "2da4c20a9faae012897e7d72ae3be3f85e15312f5ec3c0fd5a47ee790c2ce29f"
+  },
+  "final_predictive_architecture_frozen": false
+}

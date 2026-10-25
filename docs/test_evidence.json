@@ -1,0 +1,6 @@
+{
+  "command": "OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 MKL_NUM_THREADS=2 /fs04/scratch2/nd32/zhaorui/STProtein/.venv-cuda/bin/python -m pytest -q tests/test_clean_core.py",
+  "exit_code": 0,
+  "output": "7 passed in 5.18s",
+  "test_sha256": "a9c7cd29f27854309e32989d9368233cf3a8a5545cae2db7ec433b8811fc2c72"
+}

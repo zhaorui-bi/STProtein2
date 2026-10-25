@@ -1,11 +1,25 @@
-# 当前完整迭代循环
+# 精简版本与novelty的完成循环
 
-当前用户目标是循环完成研究收尾，确定最精炼、最合适的STProtein2版本，再在其上逐项增加novelty。
+用户目标是完成整体证据循环，确定当前最精炼、最合适的STProtein2版本，之后在它上面增加novelty。本文件保留完整验收范围；某个基线或窄测试通过，不代表所有工作已经完成。
 
-已完成的306项核心证据与40张完整开发网格位于研究目录`/fs04/scratch2/nd32/zhaorui/STProtein/STProtein2/runs/stprotein2_core_20261025_v1/`。验证后的B0底座已保存为提交`2f5f573`和标签`baseline-b0-20261025`，保留可重放的基准，不直接宣布它是最终最佳模型。
+| 阶段 | 当前状态 | 完成所需的证据 |
+|---|---|---|
+| 核心消融收尾 | 已通过 | 198结构＋36图＋72目标/学习率共306项核心证据、40张完整网格和原自身/邻域48格 |
+| 精简B0基准 | 已通过、已保存 | Git标签`baseline-b0-20261025`；7项功能检查、真实4164×31逐值一致、独立wheel运行 |
+| 简单神经候选多种子确认 | 已通过 | 新24项＋原A40 seed2025的12项全部完成训练、嵌套输入核对与独立重放；完整六来源、三种子 |
+| 开发默认版本取舍 | 已冻结为B0 | 预登记精简规则选择B0；严格最低均值为own_mlp，完整种子波动及负例见[冻结说明](COMPACT_BASE_20261026.md) |
+| 干净神经实现 | 软件验收通过 | 17个核心Python文件、两种头完整62次CPU嵌套拟合逐值一致；受控确定性CUDA完整拟合逐值一致；真实4164×31部署核对 |
+| 完整训练/部署版本 | 开发底座已冻结 | 已有训练、参考内选择、续训、导出、RNA-only推理和独立评分；最终含novelty的版本待后续研究验收 |
+| 正式benchmark证据 | 未完成，sciPENN CPU适配已验收 | 新增原生网络/损失/梯度、真实4000基因六次拟合、独立预测及评分；GPU、合理预算和完整主矩阵仍待完成，其余方法逐项核验 |
+| 外部确认 | 未完成 | 刷新两个队列8份样本资格和使用历史；先固定所有设置和全部RNA-only预测，再独立ADT评分 |
+| novelty迭代 | 未完成 | 在固定最佳精简版本上一次增加一个机制，容量/预算匹配，完整负例与独立确认；实现和收益分别验收 |
 
-新一轮精简候选确认只新增24项：自身RNA MLP与普通邻域MLP、两个种子、全部六来源；复用已有A40 seed2025的12项。状态与实际进程见[运行目录](/fs04/scratch2/nd32/zhaorui/STProtein/STProtein2/runs/stprotein2_compact_confirmation_20261025_v1/README.md)。旧339项暂缓矩阵不恢复。
+新多种子运行位于`/fs04/scratch2/nd32/zhaorui/STProtein/STProtein2/runs/stprotein2_compact_confirmation_20261025_v1/`，不恢复原339项暂缓任务。原benchmark手册位于同研究checkout的`Bench/`。已见开发数据不重新标为盲测。
 
-干净实现位于`/fs04/scratch2/nd32/zhaorui/STProtein2-clean`的`compact-refinement-20261025`分支。可选残差组件已通过非零输出、梯度和AdamW更新检查，并完成两个真实4164×31切片预测重放；完整神经训练/导出/部署接口和最终默认版本仍待验收。[整体证据清单](/fs04/scratch2/nd32/zhaorui/STProtein2-clean/docs/REFINEMENT_LOOP.md)保留全部未完成项。
+这是一张整体证据清单，不表示要先查看外部成绩再开发novelty。精简候选先依据开发证据固定，新增机制随后在开发范围内验证；最终模型与全部比较设置冻结后，才进入预留外部确认。
 
-模型取舍须等完整三种子结果，报告严格最低均值及精简偏好两种选择、负例和波动。外部baseline与独立确认要求继续保留；预留外部蛋白不能用于当前版本或novelty的调参。新机制在精简版本固定后逐项加入，新增机制与预测收益分别验证。
+当前分支是`compact-refinement-20261025`。已验证的11文件B0底座保存在独立标签；当前17文件实现保留可选神经对照，默认使用已冻结的B0。原始验证记录和最终含novelty的模型验收分别保留。
+
+当前软件证据见`training_validation.json`与`deployment_validation.json`。前者包含从独立wheel进行的两种头×31次完整嵌套拟合对照，涵盖输入、基线、梯度与优化轨迹、epoch及门控选择。合成软件验证不作为生物学精度或最终选型证据。
+
+`scripts/freeze_compact_base.py`已完成四项选择规则检查，记录在`compact_freeze_validation.json`。实际冻结已通过完整确认标记、独立重算的六来源三种子结果和当前软件证明，记录在`compact_base_freeze.json`。另有`cuda_training_validation.json`绑定两种头的受控确定性CUDA证明；它不证明默认非确定性GPU运行能逐位重复。冻结只固定继续开发novelty的基线，不产生最终novelty/外部确认完成声明。
