@@ -6,6 +6,8 @@
 
 The installable **`stprotein2`** package contains the core software. Evaluation tools and research experiments live in separate repository directories. The current algorithm configuration is v2.1; the source-layout version is `0.3.0.dev1`.
 
+The completed reduced core evidence, compact-model confirmation and isolated clean implementation are tracked in [the active refinement loop](docs/REFINEMENT_LOOP.md). The validated B0 foundation is preserved separately while the next default model is selected.
+
 ## Code structure
 
 ```text
