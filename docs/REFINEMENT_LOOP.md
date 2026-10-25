@@ -10,9 +10,9 @@
 | 开发默认版本取舍 | 已冻结为B0 | 预登记精简规则选择B0；严格最低均值为own_mlp，完整种子波动及负例见[冻结说明](COMPACT_BASE_20261026.md) |
 | 干净神经实现 | 软件验收通过 | 17个核心Python文件、两种头完整62次CPU嵌套拟合逐值一致；受控确定性CUDA完整拟合逐值一致；真实4164×31部署核对 |
 | 完整训练/部署版本 | 开发底座已冻结 | 已有训练、参考内选择、续训、导出、RNA-only推理和独立评分；最终含novelty的版本待后续研究验收 |
-| 正式benchmark证据 | 未完成，sciPENN CPU适配已验收 | 新增原生网络/损失/梯度、真实4000基因六次拟合、独立预测及评分；GPU、合理预算和完整主矩阵仍待完成，其余方法逐项核验 |
+| 正式benchmark证据 | 未完成，sciPENN适配与初次参考预算已验收 | CPU/CUDA原生网络、损失、梯度、真实4000基因六次拟合、独立部署及评分通过；排除Breast来源的五参考折在13–18epoch停止，无预算截断；正式注册和完整主矩阵仍待完成 |
 | 外部确认 | 未完成 | 刷新两个队列8份样本资格和使用历史；先固定所有设置和全部RNA-only预测，再独立ADT评分 |
-| novelty迭代 | 未完成 | 在固定最佳精简版本上一次增加一个机制，容量/预算匹配，完整负例与独立确认；实现和收益分别验收 |
+| novelty迭代 | 初步机制与数学控制已登记 | 来源条件化收缩的10项数学/合成检查通过；真实开发链路、四个必要控制、完整负例及原创性与收益核验仍待完成 |
 
 新多种子运行位于`/fs04/scratch2/nd32/zhaorui/STProtein/STProtein2/runs/stprotein2_compact_confirmation_20261025_v1/`，不恢复原339项暂缓任务。原benchmark手册位于同研究checkout的`Bench/`。已见开发数据不重新标为盲测。
 
@@ -23,3 +23,5 @@
 当前软件证据见`training_validation.json`与`deployment_validation.json`。前者包含从独立wheel进行的两种头×31次完整嵌套拟合对照，涵盖输入、基线、梯度与优化轨迹、epoch及门控选择。合成软件验证不作为生物学精度或最终选型证据。
 
 `scripts/freeze_compact_base.py`已完成四项选择规则检查，记录在`compact_freeze_validation.json`。实际冻结已通过完整确认标记、独立重算的六来源三种子结果和当前软件证明，记录在`compact_base_freeze.json`。另有`cuda_training_validation.json`绑定两种头的受控确定性CUDA证明；它不证明默认非确定性GPU运行能逐位重复。冻结只固定继续开发novelty的基线，不产生最终novelty/外部确认完成声明。
+
+后续研究均在原研究checkout的新命名空间执行，不改动冻结底座。查新与下一项机制协议分别为该checkout的`docs/NOVELTY_NEXT_AUDIT_20261026_v1.md`及`docs/SOURCE_CONDITIONAL_SHRINKAGE_PROTOCOL_20261026_v1.md`；数学控制的通过不能替代真实跨来源预测证据。sciPENN新验收见同checkout的`Bench/updates/SCIPENN_CUDA_ADMISSION_20261026_v1.md`。
