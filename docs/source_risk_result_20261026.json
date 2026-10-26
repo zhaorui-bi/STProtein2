@@ -1,0 +1,55 @@
+{
+  "status": "completed_negative_development_experiment",
+  "report": "/fs04/scratch2/nd32/zhaorui/STProtein/STProtein2/runs/source_risk_conditional_development_20261026_v1/report.json",
+  "report_sha256": "62a2b726781cee00705e15339d41ddfdddd37b9300bcd1ae99b562fc05ef7a8b",
+  "complete_sha256": "e86142b787c214a47b3c6fdd238595ee10f0853846de3e0676312d3db62353a7",
+  "independent_audit_sha256": "fdcbd6b169e7b9971a03bcb0f4b2bd04c0f3f72de9a5e24c826c71eaf12b0ee6",
+  "scientific_decisions": {
+    "own_mlp": {
+      "continue_research": false,
+      "mean_improves_each_required_control": {
+        "B0": false,
+        "binary": false,
+        "conditional_pooled": false,
+        "global_consensus": false
+      },
+      "sources_improved": {
+        "B0": 2,
+        "binary": 3
+      },
+      "worst_source_delta_from_B0": 0.0013356100441515029,
+      "original_binary_worst_source_delta_from_B0": 0.0031070770684010762,
+      "both_factors_change_predictions": {
+        "condition": true,
+        "source_constraint": true
+      },
+      "novelty_established": false,
+      "external_confirmation": false
+    },
+    "neighbor_mlp": {
+      "continue_research": false,
+      "mean_improves_each_required_control": {
+        "B0": true,
+        "binary": true,
+        "conditional_pooled": false,
+        "global_consensus": false
+      },
+      "sources_improved": {
+        "B0": 5,
+        "binary": 4
+      },
+      "worst_source_delta_from_B0": 0.00022252106207587552,
+      "original_binary_worst_source_delta_from_B0": 0.00043347922178438303,
+      "both_factors_change_predictions": {
+        "condition": true,
+        "source_constraint": true
+      },
+      "novelty_established": false,
+      "external_confirmation": false
+    }
+  },
+  "package_sources_unchanged": true,
+  "compact_default_changed": false,
+  "novelty_established": false,
+  "external_data_accessed": false
+}

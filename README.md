@@ -2,6 +2,8 @@
 
 The frozen compact development default is **B0: reference-fitted RNA Ridge plus the fixed physical spatial correction**. The registered six-source, three-seed comparison retained B0 under its parsimony rule; `own_mlp` had the lowest mean RMSE and remains an explicit comparison. See [the complete decision and negative results](docs/COMPACT_BASE_20261026.md). This freezes the starting point for further research; novelty, the full formal benchmark and reserved external confirmation remain open.
 
+The first post-freeze source-conditional shrinkage experiment is complete. Both registered primary variants failed their continuation criteria; the [complete negative-result summary](docs/SOURCE_RISK_RESULT_20261026.md) preserves all controls and explains the decision.
+
 The package keeps reference-only preprocessing, grouped Ridge selection, named 31-channel outputs, artifact identities and separate scoring. Both ordinary residual heads can also be trained with nested reference selection or exported from independently verified research checkpoints.
 
 The validated B0 foundation is preserved at Git tag `baseline-b0-20261025`. The current branch extends that version; completed evidence and remaining requirements are tracked in [REFINEMENT_LOOP.md](docs/REFINEMENT_LOOP.md). Historical code, negative results and checkpoints remain in the original directories and Git history.
