@@ -10,18 +10,18 @@
 | 开发默认版本取舍 | 已冻结为B0 | 预登记精简规则选择B0；严格最低均值为own_mlp，完整种子波动及负例见[冻结说明](COMPACT_BASE_20261026.md) |
 | 干净神经实现 | 软件验收通过 | 17个核心Python文件、两种头完整62次CPU嵌套拟合逐值一致；受控确定性CUDA完整拟合逐值一致；真实4164×31部署核对 |
 | 完整训练/部署版本 | 开发底座已冻结 | 已有训练、参考内选择、续训、导出、RNA-only推理和独立评分；最终含novelty的版本待后续研究验收 |
-| 正式benchmark证据 | 未完成，sciPENN适配与初次参考预算已验收 | CPU/CUDA原生网络、损失、梯度、真实4000基因六次拟合、独立部署及评分通过；排除Breast来源的五参考折在13–18epoch停止，无预算截断；正式注册和完整主矩阵仍待完成 |
+| 正式benchmark证据 | 全套未完成；sciPENN正式开发主轨道已完成 | sciPENN覆盖六来源、三种子、18外层任务、48次拟合及30份预测，独立CPU重放和评分通过；SPINE目前只有资源实测，STProtein适配及其余方法的统一主轨道复核仍待完成，见[sciPENN结果](SCIPENN_RESULT_20261026.md) |
 | 外部确认 | 未完成 | 刷新两个队列8份样本资格和使用历史；先固定所有设置和全部RNA-only预测，再独立ADT评分 |
-| novelty迭代 | 初步机制与数学控制已登记 | 来源条件化收缩的10项数学/合成检查通过；真实开发链路、四个必要控制、完整负例及原创性与收益核验仍待完成 |
+| novelty迭代 | 首轮真实开发已完成，两个主候选未通过门槛 | 六来源、三种子、两种残差头共36任务、360份预测及216份独立评分完成；四个必要控制与完整负例保留，未并入冻结底座，见[负结果说明](SOURCE_RISK_RESULT_20261026.md) |
 
 新多种子运行位于`/fs04/scratch2/nd32/zhaorui/STProtein/STProtein2/runs/stprotein2_compact_confirmation_20261025_v1/`，不恢复原339项暂缓任务。原benchmark手册位于同研究checkout的`Bench/`。已见开发数据不重新标为盲测。
 
 这是一张整体证据清单，不表示要先查看外部成绩再开发novelty。精简候选先依据开发证据固定，新增机制随后在开发范围内验证；最终模型与全部比较设置冻结后，才进入预留外部确认。
 
-当前分支是`compact-refinement-20261025`。已验证的11文件B0底座保存在独立标签；当前17文件实现保留可选神经对照，默认使用已冻结的B0。原始验证记录和最终含novelty的模型验收分别保留。
+当前`main`分支已采用精简实现。已验证的11文件B0底座保存在`baseline-b0-20261025`标签，17文件开发底座保存在`compact-base-20261026`标签；当前实现保留可选神经对照，默认使用已冻结的B0。原始验证记录和最终含novelty的模型验收分别保留。
 
 当前软件证据见`training_validation.json`与`deployment_validation.json`。前者包含从独立wheel进行的两种头×31次完整嵌套拟合对照，涵盖输入、基线、梯度与优化轨迹、epoch及门控选择。合成软件验证不作为生物学精度或最终选型证据。
 
 `scripts/freeze_compact_base.py`已完成四项选择规则检查，记录在`compact_freeze_validation.json`。实际冻结已通过完整确认标记、独立重算的六来源三种子结果和当前软件证明，记录在`compact_base_freeze.json`。另有`cuda_training_validation.json`绑定两种头的受控确定性CUDA证明；它不证明默认非确定性GPU运行能逐位重复。冻结只固定继续开发novelty的基线，不产生最终novelty/外部确认完成声明。
 
-后续研究均在原研究checkout的新命名空间执行，不改动冻结底座。查新与下一项机制协议分别为该checkout的`docs/NOVELTY_NEXT_AUDIT_20261026_v1.md`及`docs/SOURCE_CONDITIONAL_SHRINKAGE_PROTOCOL_20261026_v1.md`；数学控制的通过不能替代真实跨来源预测证据。sciPENN新验收见同checkout的`Bench/updates/SCIPENN_CUDA_ADMISSION_20261026_v1.md`。
+后续研究均在原研究checkout的新命名空间执行，不改动冻结底座。首轮机制的协议和完整产物保留在该checkout；本项目的[负结果说明](SOURCE_RISK_RESULT_20261026.md)记录其实际科学结论。[sciPENN结果](SCIPENN_RESULT_20261026.md)记录已完成的正式开发对照。SPINE资源实测只证明真实规模运行可行，不能计为完整来源隔离训练或benchmark完成。
