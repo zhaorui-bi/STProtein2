@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "method": "scipenn",
+  "profile": "common_adapter",
+  "outer_cases": 18,
+  "actual_fits": 48,
+  "query_matrices": 30,
+  "fixed_proteins": 31,
+  "independently_reaggregated_macro_RMSE": 0.8199115463793051,
+  "report_sha256": "2d800b23a303fa103aaf5b3dc3ee252734c9a2485aa3fa8e8cad4706ab585802",
+  "complete_sha256": "57927e6d75fbbbf5da7d2d2d082336bff1c1d0002066264cbb668b2ccc8f6ec2",
+  "registered_scientific_sources_unchanged": true,
+  "development_only": true,
+  "full_benchmark_complete": false,
+  "external_confirmation": false,
+  "observed_unix": 1793002473.7291343
+}
